@@ -38,14 +38,14 @@ website:
         menu:
           - text: "Testar normalidade dos dados"
             file: aula3.qmd
-          - text: "Análise de dados"
-            file: aula4.qmd
-          - text: "Transformação de dados"
-            file: aula3_2.qmd
-          - text: "AUDPC"
-            file: aula5.qmd            
           - text: "Anova Fatorial"
             file: aula3_1.qmd
+          - text: "Transformação de dados"
+            file: aula3_2.qmd
+          - text: "Análise de dados"
+            file: aula4.qmd
+          - text: "AUDPC"
+            file: aula5.qmd            
           - text: "Box Cox"
             file: aula6_3.qmd            
           - text: "Regressão não-linear"
@@ -53,7 +53,8 @@ website:
           - text: "Análise de Regressão"
             file: aula6_2.qmd            
           - text: "Modelo Misto"
-            file: aula6_1.qmd            
+            file: aula6_1.qmd
+           
 
       - text: "Mapas no R"
         icon: globe-central-south-asia
