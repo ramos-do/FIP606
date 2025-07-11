@@ -8,7 +8,7 @@
 
 <meta name="author" content="Danilo Oliveira Ramos">
 
-<title>Aula 5 - AUDPC – FIP 606</title>
+<title>Aula 2 - Ler dados de arquivos – FIP 606</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -236,15 +236,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#audpc-área-abaixo-da-curva-de-progresso-da-doença" id="toc-audpc-área-abaixo-da-curva-de-progresso-da-doença" class="nav-link active" data-scroll-target="#audpc-área-abaixo-da-curva-de-progresso-da-doença">AUDPC (Área Abaixo da Curva de Progresso da Doença)</a>
+  <li><a href="#ler-dados-de-arquivos" id="toc-ler-dados-de-arquivos" class="nav-link active" data-scroll-target="#ler-dados-de-arquivos">Ler dados de arquivos</a>
   <ul class="collapse">
-  <li><a href="#cálculo-do-audpc" id="toc-cálculo-do-audpc" class="nav-link" data-scroll-target="#cálculo-do-audpc">Cálculo do AUDPC</a></li>
-  <li><a href="#visualização-dos-audpcs-por-grupo" id="toc-visualização-dos-audpcs-por-grupo" class="nav-link" data-scroll-target="#visualização-dos-audpcs-por-grupo">Visualização dos AUDPCs por grupo</a></li>
-  <li><a href="#modelo-linear-com-interação" id="toc-modelo-linear-com-interação" class="nav-link" data-scroll-target="#modelo-linear-com-interação">Modelo linear com interação</a>
+  <li><a href="#dados-no-excel" id="toc-dados-no-excel" class="nav-link" data-scroll-target="#dados-no-excel">Dados no Excel</a></li>
+  <li><a href="#gerando-uma-tabela-de-contingência" id="toc-gerando-uma-tabela-de-contingência" class="nav-link" data-scroll-target="#gerando-uma-tabela-de-contingência">Gerando uma tabela de contingência</a></li>
+  <li><a href="#visualizar-os-dados" id="toc-visualizar-os-dados" class="nav-link" data-scroll-target="#visualizar-os-dados">Visualizar os dados</a></li>
+  <li><a href="#editar-e-exportar-gráficos" id="toc-editar-e-exportar-gráficos" class="nav-link" data-scroll-target="#editar-e-exportar-gráficos">Editar e Exportar Gráficos</a>
   <ul class="collapse">
-  <li><a href="#diagnóstico-de-resíduos" id="toc-diagnóstico-de-resíduos" class="nav-link" data-scroll-target="#diagnóstico-de-resíduos">Diagnóstico de resíduos</a></li>
-  <li><a href="#médias-ajustadas-emmeans" id="toc-médias-ajustadas-emmeans" class="nav-link" data-scroll-target="#médias-ajustadas-emmeans">Médias ajustadas (emmeans)</a></li>
+  <li><a href="#combinar-gráficos" id="toc-combinar-gráficos" class="nav-link" data-scroll-target="#combinar-gráficos">Combinar Gráficos</a></li>
   </ul></li>
+  <li><a href="#conlcusão" id="toc-conlcusão" class="nav-link" data-scroll-target="#conlcusão">Conlcusão</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -254,7 +255,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Aula 5 - AUDPC</h1>
+<h1 class="title">Aula 2 - Ler dados de arquivos</h1>
 </div>
 
 
@@ -277,183 +278,142 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="audpc-área-abaixo-da-curva-de-progresso-da-doença" class="level1">
-<h1>AUDPC (Área Abaixo da Curva de Progresso da Doença)</h1>
-<p>Vamos usar um novo pacote, o <code>epifitter</code>. Além disso, vamos filtrar os dados que iremos analisar.</p>
+<section id="ler-dados-de-arquivos" class="level1">
+<h1>Ler dados de arquivos</h1>
+<section id="dados-no-excel" class="level3">
+<h3 class="anchored" data-anchor-id="dados-no-excel">Dados no Excel</h3>
+<p>Vamos utilizar dois métodos de importação:</p>
+<ul>
+<li><p>Leitura de uma planilha local com a função <code>read_excel()</code>;</p></li>
+<li><p>Importação direta de planilhas do Google Sheets por meio da função <code>gsheet2tbl()</code>, permitindo o acesso a diferentes abas de um mesmo documento online.</p></li>
+</ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(epifitter)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>oidio <span class="ot">&lt;-</span> PowderyMildew</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#oidio|&gt; </span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#ggplot(aes(time, sev))+</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_point()+</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#facet_grid(moisture ~ irrigation_type)</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>oidio <span class="sc">|&gt;</span> </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(irrigation_type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"MS"</span>, <span class="st">"MS above canopy"</span>, <span class="st">"Overhead"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(time, sev))<span class="sc">+</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(moisture <span class="sc">~</span> irrigation_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">##install.packages("readxl")</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="do">##install.packages("gsheet2tbl")</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gsheet)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"dados-diversos.xlsx"</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">sheet =</span> <span class="st">"sensibilidade_fungicidas"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">gsheet2tbl</span>(<span class="st">"https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=373270992#gid=373270992"</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>survey <span class="ot">=</span> <span class="fu">gsheet2tbl</span>(<span class="st">"https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=1118819738#gid=1118819738"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="gerando-uma-tabela-de-contingência" class="level3">
+<h3 class="anchored" data-anchor-id="gerando-uma-tabela-de-contingência">Gerando uma tabela de contingência</h3>
+<p>Utilizando a função <code>tabyl()</code> do pacote <code>janitor</code>, vamos construir uma tabela de contingência que resume a frequência de espécies por estado e ano, facilitando a análise descritiva.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">##install.packages("janitor")</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>survey_b <span class="ot">=</span> survey <span class="sc">|&gt;</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(state, species, year) <span class="sc">|&gt;</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n =</span> <span class="fu">n</span>())</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>survey_b <span class="sc">|&gt;</span> </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabyl</span>(state, species, year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$`2009`
+ state Fgra Fspp
+    PR   92   31
+    RS  133    9
+
+$`2010`
+ state Fgra Fspp
+    PR    0    0
+    RS  187   29
+
+$`2011`
+ state Fgra Fspp
+    PR   58   35
+    RS   82   10</code></pre>
+</div>
+</div>
+</section>
+<section id="visualizar-os-dados" class="level3">
+<h3 class="anchored" data-anchor-id="visualizar-os-dados">Visualizar os dados</h3>
+<p>Vamos criar um gráfico de barras com <code>ggplot2</code>, demonstrando a distribuição temporal do número de registros por espécie. As barras foram preenchidas com cores diferenciadas para cada espécie, utilizando a paleta perceptualmente uniforme <code>viridis</code>, adequada para visualizações inclusivas e publicações.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>survey_b <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, species) <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(year, n, <span class="at">fill =</span> species,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> species))<span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()<span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="aula5_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="aula2_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># %in% função para pegar dentro de Irrigation_type o MS</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#scale_fill_manual(values = c("red", "blue"))</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#facet_wrap(~year)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Foi feita uma <strong>seleção de tratamentos de irrigação específicos</strong> (três tipos) para análise. O operador <code>%in%</code> é usado para filtrar esses valores dentro da variável <code>irrigation_type</code>.</p>
-<p>Em seguida, Visualizamos a progressão da doença. <strong>Gráficos de pontos</strong> da <strong>severidade da doença ao longo do tempo</strong> (<code>sev</code> x <code>time</code>), separados por <strong>tipo de irrigação</strong> e <strong>nível de umidade</strong>. Isso permite observar padrões visuais de como a doença evolui em diferentes condições ambientais.</p>
-<section id="cálculo-do-audpc" class="level2">
-<h2 class="anchored" data-anchor-id="cálculo-do-audpc">Cálculo do AUDPC</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>oidio2 <span class="ot">&lt;-</span> oidio <span class="sc">|&gt;</span> <span class="fu">filter</span>(irrigation_type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"MS"</span>, <span class="st">"MS above canopy"</span>, <span class="st">"Overhead"</span>))</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>oidio3 <span class="ot">&lt;-</span> oidio2 <span class="sc">|&gt;</span> </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(irrigation_type, moisture, block) <span class="sc">|&gt;</span> </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">AUDPC =</span> <span class="fu">AUDPC</span>(time, sev))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>A métrica <strong>AUDPC (Área Abaixo da Curva de Progresso da Doença)</strong> é calculada para cada combinação de <code>irrigation_type</code>, <code>moisture</code> e <code>block</code>. O AUDPC resume a <strong>intensidade e duração da doença</strong> ao longo do tempo em um único número.</p>
 </section>
-<section id="visualização-dos-audpcs-por-grupo" class="level2">
-<h2 class="anchored" data-anchor-id="visualização-dos-audpcs-por-grupo">Visualização dos AUDPCs por grupo</h2>
+<section id="editar-e-exportar-gráficos" class="level2">
+<h2 class="anchored" data-anchor-id="editar-e-exportar-gráficos">Editar e Exportar Gráficos</h2>
+<p>Vamos elaborar um gráfico do tipo boxplot com sobreposição de pontos individuais (<code>geom_jitter</code>) para visualizar a variação dos dados por tratamento. Vamos usar o pacote <code>ggthemes</code> para facilitar a personalização estética do gráfico, com alternativas visuais prontas e mais sofisticadas do que os temas padrão do <code>ggplot2</code>. Além disso, vamos salvar o gráfico gerado em formato <code>.png</code> usando a função <code>ggsave</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>oidio3 <span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(irrigation_type, AUDPC, <span class="at">color =</span> moisture))<span class="sc">+</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>)<span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mg <span class="ot">&lt;-</span> <span class="fu">gsheet2tbl</span>(<span class="st">"https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=983033137#gid=983033137"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>plot_mg <span class="ot">&lt;-</span> mg <span class="sc">|&gt;</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(trat, comp))<span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"darkgreen"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">outlier.color =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.1</span>, <span class="at">color =</span> <span class="st">"gray50"</span>)<span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20</span>))<span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Tratamentos"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Comprimento (mm)"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Efeito do Magnésio"</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Tamanho da lesão de mancha parda"</span>)<span class="sc">+</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_clean</span>()</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#theme_classic(base_size = 14)</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"box.png"</span>, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Os dados da aba <code>micelial</code> serão utilizados para representar graficamente a taxa de crescimento micelial de diferentes espécies de fungos. As espécies foram ordenadas com base na mediana da taxa observada, e os dados foram visualizados com um boxplot horizontal. Também foram incluídos os valores individuais como pontos sobrepostos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>micelial <span class="ot">&lt;-</span> <span class="fu">gsheet2tbl</span>(<span class="st">"https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=959387827#gid=959387827"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>plot_micelial <span class="ot">&lt;-</span> micelial <span class="sc">|&gt;</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">reorder</span>(especie, tcm), tcm))<span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.1</span>, <span class="at">color =</span> <span class="st">"gray20"</span>)<span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">"Taxa de crescimento micelial (mm/dia)"</span>)<span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_clean</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="combinar-gráficos" class="level3">
+<h3 class="anchored" data-anchor-id="combinar-gráficos">Combinar Gráficos</h3>
+<p>Os gráficos gerados anteriormente foram combinados lado a lado utilizando o pacote <code>patchwork</code>. Esse pacote permite compor múltiplos gráficos construídos com <code>ggplot2</code> de maneira intuitiva, utilizando operadores como <code>|</code> (lado a lado) e <code>/</code> (empilhados verticalmente).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>(plot_mg <span class="sc">|</span> plot_micelial) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">"A"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="aula5_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="aula2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"combo1.png"</span>, <span class="at">bg =</span> <span class="st">"white"</span>, </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Mostra os valores de <strong>AUDPC</strong> para cada tipo de irrigação, coloridos por <strong>nível de umidade</strong>. Serve para explorar <strong>diferenças potenciais entre tratamentos</strong>.</p>
-<p>Ainda <strong>não foi feita nenhuma análise estatística inferencial</strong> (ex: ANOVA, Kruskal-Wallis), mas os dados estão prontos para isso.</p>
+<p>A figura resultante foi então salva no diretório de trabalho por meio da função <code>ggsave()</code>, com fundo branco e dimensões de 8 x 4 polegadas<br>
+</p>
 </section>
-<section id="modelo-linear-com-interação" class="level2">
-<h2 class="anchored" data-anchor-id="modelo-linear-com-interação">Modelo linear com interação</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>model_oidio <span class="ot">&lt;-</span> <span class="fu">lm</span>(AUDPC <span class="sc">~</span> irrigation_type <span class="sc">*</span> moisture, <span class="at">data =</span> oidio3)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(model_oidio)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Analysis of Variance Table
-
-Response: AUDPC
-                         Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-irrigation_type           2 134.341  67.170 451.721 5.073e-12 ***
-moisture                  1   6.680   6.680  44.924 2.188e-05 ***
-irrigation_type:moisture  2   5.104   2.552  17.162 0.0003022 ***
-Residuals                12   1.784   0.149                      
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
-</div>
-</div>
-<p>A função <code>anova()</code> testa se esses efeitos explicam significativamente a variação em <code>AUDPC</code></p>
-<section id="diagnóstico-de-resíduos" class="level3">
-<h3 class="anchored" data-anchor-id="diagnóstico-de-resíduos">Diagnóstico de resíduos</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DHARMa)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(model_oidio))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="aula5_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
 </section>
-<section id="médias-ajustadas-emmeans" class="level3">
-<h3 class="anchored" data-anchor-id="médias-ajustadas-emmeans">Médias ajustadas (emmeans)</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(agricolae)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>medias_oidio <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(model_oidio, <span class="sc">~</span> irrigation_type <span class="sc">|</span> moisture)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#inverter irrigation_type | moisture para comparar</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>medias_oidio</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>moisture = High moisture:
- irrigation_type emmean    SE df lower.CL upper.CL
- MS                8.52 0.223 12     8.04     9.01
- MS above canopy   3.99 0.223 12     3.51     4.48
- Overhead          3.68 0.223 12     3.20     4.17
-
-moisture = Moderate moisture:
- irrigation_type emmean    SE df lower.CL upper.CL
- MS               11.18 0.223 12    10.70    11.67
- MS above canopy   4.86 0.223 12     4.37     5.34
- Overhead          3.81 0.223 12     3.33     4.30
-
-Confidence level used: 0.95 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cld</span>(medias_oidio) <span class="co"># Cria letras compactas que indicam quais grupos são significativamente diferentes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>moisture = High moisture:
- irrigation_type emmean    SE df lower.CL upper.CL .group
- Overhead          3.68 0.223 12     3.20     4.17  1    
- MS above canopy   3.99 0.223 12     3.51     4.48  1    
- MS                8.52 0.223 12     8.04     9.01   2   
-
-moisture = Moderate moisture:
- irrigation_type emmean    SE df lower.CL upper.CL .group
- Overhead          3.81 0.223 12     3.33     4.30  1    
- MS above canopy   4.86 0.223 12     4.37     5.34   2   
- MS               11.18 0.223 12    10.70    11.67    3  
-
-Confidence level used: 0.95 
-P value adjustment: tukey method for comparing a family of 3 estimates 
-significance level used: alpha = 0.05 
-NOTE: If two or more means share the same grouping symbol,
-      then we cannot show them to be different.
-      But we also did not show them to be the same. </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cv.model</span>(model_oidio) <span class="co">#Calcula o coeficiente de variação (CV)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 6.418205</code></pre>
-</div>
-</div>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th></th>
-<th style="text-align: center;">High moisture</th>
-<th style="text-align: center;">Moderate moisture</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>MS</td>
-<td style="text-align: center;">8.52 A a</td>
-<td style="text-align: center;">11.18 A b</td>
-</tr>
-<tr class="even">
-<td>MS AC</td>
-<td style="text-align: center;">3.99 B a</td>
-<td style="text-align: center;">4.86 B b</td>
-</tr>
-<tr class="odd">
-<td>Overhead</td>
-<td style="text-align: center;">3.68 B a</td>
-<td style="text-align: center;">3.81 C a</td>
-</tr>
-<tr class="even">
-<td>cv = 6.41</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-</tbody>
-</table>
+<section id="conlcusão" class="level2">
+<h2 class="anchored" data-anchor-id="conlcusão">Conlcusão</h2>
+<p>Nessa etapa, utilizamos os pacotes: <code>tidyverse</code>, <code>janitor</code>, <code>ggplot2</code>, <code>patchwork</code> e <code>ggthemes</code> para processar planilhas provenientes de diferentes fontes (locais e online), organizar e sumarizar variáveis categóricas e contínuas, bem como para a construção de visualização de gráficos.</p>
 
 
-</section>
 </section>
 </section>
 

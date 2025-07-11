@@ -20,6 +20,7 @@ website:
       - icon: house 
         href: index.qmd
         text: Home
+
       - text: "Iniciando no R"
         icon: bookmark
         menu:
@@ -27,9 +28,11 @@ website:
             file: aula1.qmd
           - text: "Ler dados de arquivos"
             file: aula2.qmd
+
       - text: "Principais pacotes"
         icon: box-seam
         file: pacotes.qmd
+
       - text: "Análises Estatísticas no R"
         icon: file-earmark-bar-graph
         menu:
@@ -39,6 +42,8 @@ website:
             file: aula4.qmd
           - text: "Transformação de dados"
             file: aula3_2.qmd
+          - text: "AUDPC"
+            file: aula5.qmd            
           - text: "Anova Fatorial"
             file: aula3_1.qmd
           - text: "Box Cox"
@@ -49,6 +54,7 @@ website:
             file: aula6_2.qmd            
           - text: "Modelo Misto"
             file: aula6_1.qmd            
+
       - text: "Mapas no R"
         icon: globe-central-south-asia
         file: aula_mapas.qmd
