@@ -23,11 +23,11 @@ website:
 
       - text: "Iniciando no R"
         icon: bookmark
-        href: aula1.qmd
+        file: aula1.qmd
           
       - text: "Ler dados de arquivos"
         icon: bookmark
-        href: aula2.qmd
+        file: aula2.qmd
 
       - text: "Principais pacotes"
         icon: box-seam
