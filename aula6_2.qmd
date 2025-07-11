@@ -1,5 +1,5 @@
 ---
-title: "Aula 6 -"
+title: "Aula 6 - Análise de Regressão"
 author: Danilo Oliveira Ramos
 format: html
 ---

@@ -1,2 +1,16 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Força todos os arquivos de texto a usar LF como fim de linha
+* text=auto eol=lf
+
+# Evita avisos para arquivos do Quarto e R Markdown
+*.qmd  text eol=lf
+*.Rmd  text eol=lf
+*.R    text eol=lf
+*.csv  text eol=lf
+*.tsv  text eol=lf
+*.html text eol=lf
+*.css  text eol=lf
+*.js   text eol=lf
+*.yaml text eol=lf
+*.yml  text eol=lf
+*.md   text eol=lf
+
