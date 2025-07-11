@@ -2,8 +2,6 @@
 title: "Aula 2 - Ler dados de arquivos"
 author: Danilo Oliveira Ramos
 format: html
-editor_options: 
-  chunk_output_type: console
 ---
 
 # Ler dados de arquivos
