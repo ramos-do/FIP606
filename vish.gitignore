@@ -1,0 +1,30 @@
+# Arquivos criados por R/RStudio
+.Rhistory
+.RData
+.Rproj.user/
+.Ruserdata
+*.Rproj
+
+# Cache do quarto
+_quarto.yml~
+_quarto_temp/
+.cache/
+*.knit.md
+*.utf8.md
+
+# Arquivos gerados pela renderização do site
+_site/
+docs/
+
+# Arquivos temporários do sistema
+.DS_Store
+Thumbs.db
+
+# Configuração do VSCode (caso use)
+.vscode/
+
+# Dados que não quer versionar
+*.csv~
+*.tsv~
+*.xlsx~
+*.sav~
