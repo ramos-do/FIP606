@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Danilo Oliveira Ramos">
+
+<title>Aula 4 – FIP 606</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./images/site.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-2236d71adaf11e0e1c72d7e1e9af01d6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-541aba00ba7fdbb1db6393518da828eb.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">FIP 606</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> <i class="bi bi-house" role="img">
+</i> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-iniciando-no-r" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-bookmark" role="img">
+</i> 
+ <span class="menu-text">Iniciando no R</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-iniciando-no-r">    
+        <li>
+    <a class="dropdown-item" href="./aula1.html">
+ <span class="dropdown-text">Introdução ao R</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./aula2.qmd">
+ <span class="dropdown-text">Ler dados de arquivos</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="./pacotes.html"> <i class="bi bi-box-seam" role="img">
+</i> 
+<span class="menu-text">Principais pacotes</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-análises-estatísticas-no-r" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-file-earmark-bar-graph" role="img">
+</i> 
+ <span class="menu-text">Análises Estatísticas no R</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-análises-estatísticas-no-r">    
+        <li>
+    <a class="dropdown-item" href="./aula3.html">
+ <span class="dropdown-text">Testar normalidade dos dados</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./aula4.html">
+ <span class="dropdown-text">Análise de dados</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./aula3_2.html">
+ <span class="dropdown-text">Transformação de dados</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./aula3_1.html">
+ <span class="dropdown-text">Anova Fatorial</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="./aula_mapas.html"> <i class="bi bi-globe-central-south-asia" role="img">
+</i> 
+<span class="menu-text">Mapas no R</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/ramos-do"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/danilo-ramos-718146360/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.instagram.com/ramosdaniloo/"> <i class="bi bi-instagram" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#análise-de-dados" id="toc-análise-de-dados" class="nav-link active" data-scroll-target="#análise-de-dados">Análise de dados</a>
+  <ul class="collapse">
+  <li><a href="#importação-dos-dados" id="toc-importação-dos-dados" class="nav-link" data-scroll-target="#importação-dos-dados"><strong>Importação dos dados</strong></a></li>
+  </ul></li>
+  <li><a href="#análise-de-correlação-de-pearson" id="toc-análise-de-correlação-de-pearson" class="nav-link" data-scroll-target="#análise-de-correlação-de-pearson"><strong>Análise de Correlação de Pearson</strong></a></li>
+  <li><a href="#regressão-linear-simples" id="toc-regressão-linear-simples" class="nav-link" data-scroll-target="#regressão-linear-simples">Regressão linear simples</a></li>
+  <li><a href="#análise-de-variância-anova-com-modelo-linear" id="toc-análise-de-variância-anova-com-modelo-linear" class="nav-link" data-scroll-target="#análise-de-variância-anova-com-modelo-linear">Análise de Variância (ANOVA) com Modelo Linear</a></li>
+  <li><a href="#diagnóstico-de-resíduos-com-dharma" id="toc-diagnóstico-de-resíduos-com-dharma" class="nav-link" data-scroll-target="#diagnóstico-de-resíduos-com-dharma">Diagnóstico de Resíduos com DHARMa</a></li>
+  <li><a href="#comparação-de-médias" id="toc-comparação-de-médias" class="nav-link" data-scroll-target="#comparação-de-médias">Comparação de médias</a></li>
+  <li><a href="#modelos-lineares-mistos-lmm" id="toc-modelos-lineares-mistos-lmm" class="nav-link" data-scroll-target="#modelos-lineares-mistos-lmm">Modelos Lineares Mistos (LMM)</a>
+  <ul class="collapse">
+  <li><a href="#análise-dos-dados-do-experimento-com-milho" id="toc-análise-dos-dados-do-experimento-com-milho" class="nav-link" data-scroll-target="#análise-dos-dados-do-experimento-com-milho">Análise dos dados do experimento com milho</a></li>
+  <li><a href="#modelagem-mista" id="toc-modelagem-mista" class="nav-link" data-scroll-target="#modelagem-mista">Modelagem mista</a>
+  <ul class="collapse">
+  <li><a href="#comparações-múltiplas" id="toc-comparações-múltiplas" class="nav-link" data-scroll-target="#comparações-múltiplas">Comparações múltiplas</a></li>
+  <li><a href="#modelagem-para-produtividade" id="toc-modelagem-para-produtividade" class="nav-link" data-scroll-target="#modelagem-para-produtividade">Modelagem para produtividade</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#coeficiente-de-determinação-r²" id="toc-coeficiente-de-determinação-r²" class="nav-link" data-scroll-target="#coeficiente-de-determinação-r²">Coeficiente de Determinação (R²)</a>
+  <ul class="collapse">
+  <li><a href="#relação-entre-índice-e-produtividade" id="toc-relação-entre-índice-e-produtividade" class="nav-link" data-scroll-target="#relação-entre-índice-e-produtividade">Relação entre índice e produtividade</a>
+  <ul class="collapse">
+  <li><a href="#conclusão" id="toc-conclusão" class="nav-link" data-scroll-target="#conclusão"><strong>Conclusão</strong></a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Aula 4</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Danilo Oliveira Ramos </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="análise-de-dados" class="level1">
+<h1>Análise de dados</h1>
+<section id="importação-dos-dados" class="level2">
+<h2 class="anchored" data-anchor-id="importação-dos-dados"><strong>Importação dos dados</strong></h2>
+<p>Foi utilizado o pacote <code>readxl</code> para importar a aba <code>"fungicida_campo"</code> do arquivo <code>dados-diversos.xlsx</code>, contendo dados de produtividade (<code>PROD</code>), severidade da ferrugem (<code>FER</code>), desfolha (<code>DFC</code>), tratamentos (<code>TRAT</code>) e blocos (<code>BLOCO</code>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## aula 30/04 </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>campo <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"dados-diversos.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"fungicida_campo"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>campo<span class="sc">$</span>TRAT <span class="ot">&lt;-</span> <span class="fu">factor</span>(campo<span class="sc">$</span>TRAT)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>campo<span class="sc">$</span>BLOCO <span class="ot">&lt;-</span> <span class="fu">factor</span>(campo<span class="sc">$</span>BLOCO)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>m_campo <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(FER) <span class="sc">~</span> BLOCO <span class="sc">+</span> TRAT, <span class="at">data =</span> campo)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m_campo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: log(FER)
+          Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+BLOCO      3  0.2064 0.06880  1.7961    0.1788    
+TRAT       7 11.5210 1.64585 42.9665 4.838e-11 ***
+Residuals 21  0.8044 0.03831                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DHARMa)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(m_campo))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula4_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>means_campo <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(m_campo, <span class="sc">~</span> TRAT, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>means_campo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> TRAT response    SE df lower.CL upper.CL
+ 1       20.02 1.960 21    16.33    24.54
+ 2        5.68 0.556 21     4.63     6.96
+ 3        3.81 0.373 21     3.11     4.67
+ 4        3.08 0.301 21     2.51     3.78
+ 5        3.24 0.317 21     2.64     3.97
+ 6        2.98 0.292 21     2.43     3.65
+ 7        3.37 0.330 21     2.75     4.13
+ 8        3.48 0.341 21     2.84     4.27
+
+Results are averaged over the levels of: BLOCO 
+Confidence level used: 0.95 
+Intervals are back-transformed from the log scale </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>cv <span class="ot">&lt;-</span> (<span class="fu">sigma</span>(m_campo) <span class="sc">/</span> <span class="fu">mean</span>(campo<span class="sc">$</span>FER)) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>cv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.376265</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(means_campo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula4_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cld</span>(means_campo) <span class="co">#tratamento 6 é o único que se diferencia</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> TRAT response    SE df lower.CL upper.CL .group
+ 6        2.98 0.292 21     2.43     3.65  1    
+ 4        3.08 0.301 21     2.51     3.78  1    
+ 5        3.24 0.317 21     2.64     3.97  1    
+ 7        3.37 0.330 21     2.75     4.13  1    
+ 8        3.48 0.341 21     2.84     4.27  1    
+ 3        3.81 0.373 21     3.11     4.67  12   
+ 2        5.68 0.556 21     4.63     6.96   2   
+ 1       20.02 1.960 21    16.33    24.54    3  
+
+Results are averaged over the levels of: BLOCO 
+Confidence level used: 0.95 
+Intervals are back-transformed from the log scale 
+P value adjustment: tukey method for comparing a family of 8 estimates 
+Tests are performed on the log scale 
+significance level used: alpha = 0.05 
+NOTE: If two or more means share the same grouping symbol,
+      then we cannot show them to be different.
+      But we also did not show them to be the same. </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pwpm</span>(means_campo) <span class="co">#função pwpm faz comparações em uma matriz</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        1       2       3       4       5       6       7       8
+1 [20.02]  &lt;.0001  &lt;.0001  &lt;.0001  &lt;.0001  &lt;.0001  &lt;.0001  &lt;.0001
+2   3.525 [ 5.68]  0.1252  0.0048  0.0110  0.0028  0.0204  0.0343
+3   5.259   1.492 [ 3.81]  0.7832  0.9335  0.6440  0.9843  0.9976
+4   6.500   1.844   1.236 [ 3.08]  0.9999  1.0000  0.9976  0.9842
+5   6.178   1.753   1.175   0.951 [ 3.24]  0.9984  1.0000  0.9994
+6   6.721   1.906   1.278   1.034   1.088 [ 2.98]  0.9842  0.9431
+7   5.945   1.686   1.130   0.915   0.962   0.885 [ 3.37]  1.0000
+8   5.750   1.631   1.093   0.885   0.931   0.856   0.967 [ 3.48]
+
+Row and column labels: TRAT
+Upper triangle: P values   null = 1  adjust = "tukey"
+Diagonal: [Estimates] (response)   type = "response"
+Lower triangle: Comparisons (ratio)   earlier vs. later</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="análise-de-correlação-de-pearson" class="level1">
+<h1><strong>Análise de Correlação de Pearson</strong></h1>
+<p>Utilizada para verificar se existe associação linear entre duas variáveis quantitativas.</p>
+<p>📌 <strong>Quando usar:</strong> Quando se quer avaliar a força e direção da relação entre duas variáveis numéricas.</p>
+<p>Nesse caso, foi calculado o coeficiente de correlação entre <code>FER</code> (ferrugem) e <code>PROD</code> (produtividade), e também entre <code>FER</code> e <code>DFC</code> (desfolha). A função <code>cor.test()</code> foi utilizada para verificar a significância estatística da correlação com <code>DFC</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(campo<span class="sc">$</span>FER, campo<span class="sc">$</span>PROD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.6259073</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(campo<span class="sc">$</span>FER, campo<span class="sc">$</span>DFC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's product-moment correlation
+
+data:  campo$FER and campo$DFC
+t = 14.049, df = 30, p-value = 9.864e-15
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.8635525 0.9664228
+sample estimates:
+      cor 
+0.9316978 </code></pre>
+</div>
+</div>
+</section>
+<section id="regressão-linear-simples" class="level1">
+<h1>Regressão linear simples</h1>
+<p>Tem como objetivo estimar a relação entre uma variável independente (X) e uma variável dependente (Y), ajustando uma reta.</p>
+<p>📌 <strong>Quando usar:</strong> Para entender a influência de uma variável contínua sobre outra e gerar modelos preditivos simples.</p>
+<p>Nesse caso, foram gerados dois gráficos exploratórios com <code>ggplot2</code>:</p>
+<ul>
+<li>Um <strong>gráfico de dispersão</strong> entre <code>FER</code> e <code>DFC</code>, com ajuste de linha de regressão linear (<code>geom_smooth(method = 'lm')</code>):</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>campo <span class="sc">|&gt;</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(FER, DFC))<span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula4_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Um <strong>gráfico de produtividade por tratamento</strong>, com pontos ligeiramente deslocados (<code>geom_jitter</code>) e barras vermelhas representando média e intervalo de confiança calculado via bootstrap (<code>stat_summary()</code>):</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>campo <span class="sc">|&gt;</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(TRAT, PROD))<span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.1</span>)<span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.data =</span> <span class="st">'mean_cl_boot'</span>, <span class="at">colour =</span> <span class="st">'red'</span>, <span class="at">width =</span> <span class="fl">0.3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula4_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="análise-de-variância-anova-com-modelo-linear" class="level1">
+<h1>Análise de Variância (ANOVA) com Modelo Linear</h1>
+<p>Tem como objetivo testar se há diferenças estatísticas entre as médias de dois ou mais grupos.</p>
+<p>📌 <strong>Quando usar:</strong> Quando se comparam médias entre grupos, especialmente em experimentos com delineamento em blocos.</p>
+<p>Aqui, um modelo linear foi ajustado para verificar o efeito de diferentes tratamentos (<code>TRAT</code>) e blocos (<code>BLOCO</code>) sobre a severidade da ferrugem (<code>FER</code>, transformada com log). As variáveis <code>TRAT</code> e <code>BLOCO</code> foram convertidas em fatores. Em seguida, foi ajustado um modelo linear do logaritmo da variável <code>FER</code> como resposta, em função de tratamento e bloco.</p>
+<p>A função <code>anova()</code> retornou os efeitos principais. A transformação logarítmica foi utilizada para atender pressupostos de normalidade e homocedasticidade.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>campo<span class="sc">$</span>TRAT <span class="ot">&lt;-</span> <span class="fu">factor</span>(campo<span class="sc">$</span>TRAT)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>campo<span class="sc">$</span>BLOCO <span class="ot">&lt;-</span> <span class="fu">factor</span>(campo<span class="sc">$</span>BLOCO)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>m_campo <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(FER) <span class="sc">~</span> BLOCO <span class="sc">+</span> TRAT, <span class="at">data =</span> campo)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m_campo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: log(FER)
+          Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+BLOCO      3  0.2064 0.06880  1.7961    0.1788    
+TRAT       7 11.5210 1.64585 42.9665 4.838e-11 ***
+Residuals 21  0.8044 0.03831                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="diagnóstico-de-resíduos-com-dharma" class="level1">
+<h1>Diagnóstico de Resíduos com DHARMa</h1>
+<p>Tem como objetivo verificar se os resíduos do modelo atendem aos pressupostos estatísticos: normalidade, homocedasticidade, independência.</p>
+<ul>
+<li><p><code>simulateResiduals()</code> simula e plota os resíduos.</p></li>
+<li><p>Essencial para validar a adequação do modelo.</p></li>
+</ul>
+<p>📌 <strong>Quando usar:</strong> Sempre após ajustar modelos (lm ou lmer), para garantir que as inferências são confiáveis.</p>
+<p>Com o pacote <code>DHARMa</code>, foram simulados e visualizados os resíduos do modelo linear para avaliar a adequação do ajuste.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DHARMa)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(m_campo))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula4_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="comparação-de-médias" class="level1">
+<h1>Comparação de médias</h1>
+<p>Tem como objetivo identificar quais grupos (tratamentos) diferem entre si, após uma ANOVA significativa.</p>
+<p>📌 <strong>Quando usar:</strong> Após uma ANOVA significativa, para determinar <em>quais</em> grupos são diferentes entre si.</p>
+<ul>
+<li><p>O pacote <code>emmeans()</code> calcula as médias ajustadas dos tratamentos com base no modelo;</p></li>
+<li><p>Cálculo do coeficiente de variação com <code>cv &lt;- (sigma(m_campo) / mean(campo$FER)) * 100</code>;</p></li>
+<li><p>A função <code>cld()</code> aplica letras distintas a grupos significativamente diferentes.</p></li>
+</ul>
+<!-- -->
+<ul>
+<li>A função <code>pwpm()</code> mostra comparações par a par em forma de matriz.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>means_campo <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(m_campo, <span class="sc">~</span> TRAT, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>means_campo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> TRAT response    SE df lower.CL upper.CL
+ 1       20.02 1.960 21    16.33    24.54
+ 2        5.68 0.556 21     4.63     6.96
+ 3        3.81 0.373 21     3.11     4.67
+ 4        3.08 0.301 21     2.51     3.78
+ 5        3.24 0.317 21     2.64     3.97
+ 6        2.98 0.292 21     2.43     3.65
+ 7        3.37 0.330 21     2.75     4.13
+ 8        3.48 0.341 21     2.84     4.27
+
+Results are averaged over the levels of: BLOCO 
+Confidence level used: 0.95 
+Intervals are back-transformed from the log scale </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>cv <span class="ot">&lt;-</span> (<span class="fu">sigma</span>(m_campo) <span class="sc">/</span> <span class="fu">mean</span>(campo<span class="sc">$</span>FER)) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>cv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.376265</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(means_campo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula4_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cld</span>(means_campo) <span class="co">#tratamento 6 é o único que se diferencia</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> TRAT response    SE df lower.CL upper.CL .group
+ 6        2.98 0.292 21     2.43     3.65  1    
+ 4        3.08 0.301 21     2.51     3.78  1    
+ 5        3.24 0.317 21     2.64     3.97  1    
+ 7        3.37 0.330 21     2.75     4.13  1    
+ 8        3.48 0.341 21     2.84     4.27  1    
+ 3        3.81 0.373 21     3.11     4.67  12   
+ 2        5.68 0.556 21     4.63     6.96   2   
+ 1       20.02 1.960 21    16.33    24.54    3  
+
+Results are averaged over the levels of: BLOCO 
+Confidence level used: 0.95 
+Intervals are back-transformed from the log scale 
+P value adjustment: tukey method for comparing a family of 8 estimates 
+Tests are performed on the log scale 
+significance level used: alpha = 0.05 
+NOTE: If two or more means share the same grouping symbol,
+      then we cannot show them to be different.
+      But we also did not show them to be the same. </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pwpm</span>(means_campo) <span class="co">#função pwpm faz comparações em uma matriz</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        1       2       3       4       5       6       7       8
+1 [20.02]  &lt;.0001  &lt;.0001  &lt;.0001  &lt;.0001  &lt;.0001  &lt;.0001  &lt;.0001
+2   3.525 [ 5.68]  0.1252  0.0048  0.0110  0.0028  0.0204  0.0343
+3   5.259   1.492 [ 3.81]  0.7832  0.9335  0.6440  0.9843  0.9976
+4   6.500   1.844   1.236 [ 3.08]  0.9999  1.0000  0.9976  0.9842
+5   6.178   1.753   1.175   0.951 [ 3.24]  0.9984  1.0000  0.9994
+6   6.721   1.906   1.278   1.034   1.088 [ 2.98]  0.9842  0.9431
+7   5.945   1.686   1.130   0.915   0.962   0.885 [ 3.37]  1.0000
+8   5.750   1.631   1.093   0.885   0.931   0.856   0.967 [ 3.48]
+
+Row and column labels: TRAT
+Upper triangle: P values   null = 1  adjust = "tukey"
+Diagonal: [Estimates] (response)   type = "response"
+Lower triangle: Comparisons (ratio)   earlier vs. later</code></pre>
+</div>
+</div>
+</section>
+<section id="modelos-lineares-mistos-lmm" class="level1">
+<h1>Modelos Lineares Mistos (LMM)</h1>
+<p>Tem como obejivo analisar dados com estrutura hierárquica ou com efeitos aleatórios, como blocos, parcelas ou repetições. Permite avaliar o efeito de tratamentos (fixos) controlando variações não controladas (aleatórias), como o efeito de blocos.</p>
+<p>📌 <strong>Quando usar:</strong> Em experimentos com estrutura complexa, como blocos aninhados, réplicas ou medidas repetidas.</p>
+<section id="análise-dos-dados-do-experimento-com-milho" class="level2">
+<h2 class="anchored" data-anchor-id="análise-dos-dados-do-experimento-com-milho">Análise dos dados do experimento com milho</h2>
+<p>Vamos importar a aba <code>"milho"</code> da mesma planilha, contendo variáveis como <code>hybrid</code>, <code>method</code>, <code>index</code>, <code>yield</code>, <code>block</code>, entre outras. Em seguida, vamos gerar gráficos de dispersão para a variável <code>index</code>, coloridos por método, por híbrido e com facetamento por <code>method</code>. Utilizamos o operador <code>interaction()</code> para criar uma nova variável identificadora <code>hybrid_block</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>milho <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"dados-diversos.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"milho"</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># blocos e parcelas </span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># parcial subdivididas</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>milho <span class="sc">|&gt;</span> </span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(hybrid, index, <span class="at">color =</span> method))<span class="sc">+</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.1</span>)<span class="sc">+</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> method)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula4_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>milho<span class="sc">$</span>hybrid_block <span class="ot">&lt;-</span> <span class="fu">interaction</span>(milho<span class="sc">$</span>hybrid, milho<span class="sc">$</span>block)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>milho <span class="sc">|&gt;</span> </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">hybrid_block =</span> <span class="fu">interaction</span>(hybrid,block))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 48 × 6
+   hybrid   block method index yield hybrid_block
+   &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;       
+ 1 30F53 HX     1 pin     21.1 12920 30F53 HX.1  
+ 2 30F53 HX     2 pin     21.1  9870 30F53 HX.2  
+ 3 30F53 HX     3 pin     23.3  8920 30F53 HX.3  
+ 4 30F53 HX     4 pin     35.6 13120 30F53 HX.4  
+ 5 30F53 YH     1 pin     21.1 12060 30F53 YH.1  
+ 6 30F53 YH     2 pin     22.2  7860 30F53 YH.2  
+ 7 30F53 YH     3 pin     27.3  7410 30F53 YH.3  
+ 8 30F53 YH     4 pin     27.8 10300 30F53 YH.4  
+ 9 30K64        1 pin     20.0 11700 30K64.1     
+10 30K64        2 pin     20.0 10700 30K64.2     
+# ℹ 38 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># duas formas de modificar -encontrar o identificador de cada hibrido</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="modelagem-mista" class="level2">
+<h2 class="anchored" data-anchor-id="modelagem-mista">Modelagem mista</h2>
+<p>Utilizou-se a função <code>lmer()</code> do pacote <code>lme4</code> para ajustar um modelo misto com efeitos fixos de <code>hybrid</code>, <code>method</code> e sua interação, e efeitos aleatórios de blocos aninhados em híbridos. A função <code>car::Anova</code> foi utilizada para tester os efeitos fixos, e os resíduos foram simulados com a função <code>simulateResiduals()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>m_milho <span class="ot">&lt;-</span> <span class="fu">lmer</span>(index <span class="sc">~</span> hybrid<span class="sc">*</span>method <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> block<span class="sc">:</span>hybrid_block), <span class="at">data =</span> milho)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(m_milho)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table (Type II Wald chisquare tests)
+
+Response: index
+                Chisq Df Pr(&gt;Chisq)   
+hybrid        11.5134  5   0.042099 * 
+method         4.7263  1   0.029705 * 
+hybrid:method 15.7501  5   0.007595 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(m_milho))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula4_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># usar o lmer para variáveis aleatórias, o modelo lm considera variáveis fixas </span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="do">## para yield:</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>m_milho <span class="ot">&lt;-</span> <span class="fu">lmer</span>(yield <span class="sc">~</span> hybrid<span class="sc">*</span>method <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> block<span class="sc">:</span>hybrid_block), <span class="at">data =</span> milho)</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(m_milho)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table (Type II Wald chisquare tests)
+
+Response: yield
+                Chisq Df Pr(&gt;Chisq)    
+hybrid        22.5971  5   0.000403 ***
+method         0.1049  1   0.746069    
+hybrid:method 25.9273  5  9.218e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(m_milho))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula4_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>media_milho <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(m_milho, <span class="sc">~</span> method <span class="sc">|</span> hybrid)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cld</span>(media_milho, <span class="at">Letters =</span> letters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>hybrid = 30F53 HX:
+ method emmean  SE   df lower.CL upper.CL .group
+ silk     9988 798 21.1     8329    11647  a    
+ pin     11208 798 21.1     9548    12867   b   
+
+hybrid = 30F53 YH:
+ method emmean  SE   df lower.CL upper.CL .group
+ silk     9211 798 21.1     7552    10870  a    
+ pin      9408 798 21.1     7748    11067  a    
+
+hybrid = 30K64:
+ method emmean  SE   df lower.CL upper.CL .group
+ silk    10361 798 21.1     8702    12020  a    
+ pin     11675 798 21.1    10016    13334   b   
+
+hybrid = 30S31H:
+ method emmean  SE   df lower.CL upper.CL .group
+ pin      8118 798 21.1     6459     9777  a    
+ silk     9185 798 21.1     7526    10844   b   
+
+hybrid = 30S31YH:
+ method emmean  SE   df lower.CL upper.CL .group
+ pin      7836 798 21.1     6177     9495  a    
+ silk     8277 798 21.1     6618     9936  a    
+
+hybrid = BG7049H:
+ method emmean  SE   df lower.CL upper.CL .group
+ pin     11970 798 21.1    10311    13629  a    
+ silk    12833 798 21.1    11174    14492  a    
+
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+significance level used: alpha = 0.05 
+NOTE: If two or more means share the same grouping symbol,
+      then we cannot show them to be different.
+      But we also did not show them to be the same. </code></pre>
+</div>
+</div>
+<section id="comparações-múltiplas" class="level3">
+<h3 class="anchored" data-anchor-id="comparações-múltiplas">Comparações múltiplas</h3>
+<p>Com <code>emmeans</code>, foram estimadas as médias ajustadas por método dentro de cada híbrido. Em seguida, realizou-se o agrupamento com letras via <code>cld()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>media_milho <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(m_milho, <span class="sc">~</span> method <span class="sc">|</span> hybrid)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cld</span>(media_milho, <span class="at">Letters =</span> letters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>hybrid = 30F53 HX:
+ method emmean  SE   df lower.CL upper.CL .group
+ silk     9988 798 21.1     8329    11647  a    
+ pin     11208 798 21.1     9548    12867   b   
+
+hybrid = 30F53 YH:
+ method emmean  SE   df lower.CL upper.CL .group
+ silk     9211 798 21.1     7552    10870  a    
+ pin      9408 798 21.1     7748    11067  a    
+
+hybrid = 30K64:
+ method emmean  SE   df lower.CL upper.CL .group
+ silk    10361 798 21.1     8702    12020  a    
+ pin     11675 798 21.1    10016    13334   b   
+
+hybrid = 30S31H:
+ method emmean  SE   df lower.CL upper.CL .group
+ pin      8118 798 21.1     6459     9777  a    
+ silk     9185 798 21.1     7526    10844   b   
+
+hybrid = 30S31YH:
+ method emmean  SE   df lower.CL upper.CL .group
+ pin      7836 798 21.1     6177     9495  a    
+ silk     8277 798 21.1     6618     9936  a    
+
+hybrid = BG7049H:
+ method emmean  SE   df lower.CL upper.CL .group
+ pin     11970 798 21.1    10311    13629  a    
+ silk    12833 798 21.1    11174    14492  a    
+
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+significance level used: alpha = 0.05 
+NOTE: If two or more means share the same grouping symbol,
+      then we cannot show them to be different.
+      But we also did not show them to be the same. </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># método pin discrima mais que o método silk</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="modelagem-para-produtividade" class="level3">
+<h3 class="anchored" data-anchor-id="modelagem-para-produtividade">Modelagem para produtividade</h3>
+<p>Repetiu-se a modelagem mista, agora com a variável <code>yield</code> como resposta. Os procedimentos foram os mesmos: ajuste com <code>lmer()</code>, testes com <code>Anova()</code> e comparação de médias com <code>emmeans</code> e <code>cld()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="do">## para yield:</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>m_milho <span class="ot">&lt;-</span> <span class="fu">lmer</span>(yield <span class="sc">~</span> hybrid<span class="sc">*</span>method <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> block<span class="sc">:</span>hybrid_block), <span class="at">data =</span> milho)</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(m_milho)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table (Type II Wald chisquare tests)
+
+Response: yield
+                Chisq Df Pr(&gt;Chisq)    
+hybrid        22.5971  5   0.000403 ***
+method         0.1049  1   0.746069    
+hybrid:method 25.9273  5  9.218e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(m_milho))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula4_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>media_milho <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(m_milho, <span class="sc">~</span> method <span class="sc">|</span> hybrid)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cld</span>(media_milho, <span class="at">Letters =</span> letters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>hybrid = 30F53 HX:
+ method emmean  SE   df lower.CL upper.CL .group
+ silk     9988 798 21.1     8329    11647  a    
+ pin     11208 798 21.1     9548    12867   b   
+
+hybrid = 30F53 YH:
+ method emmean  SE   df lower.CL upper.CL .group
+ silk     9211 798 21.1     7552    10870  a    
+ pin      9408 798 21.1     7748    11067  a    
+
+hybrid = 30K64:
+ method emmean  SE   df lower.CL upper.CL .group
+ silk    10361 798 21.1     8702    12020  a    
+ pin     11675 798 21.1    10016    13334   b   
+
+hybrid = 30S31H:
+ method emmean  SE   df lower.CL upper.CL .group
+ pin      8118 798 21.1     6459     9777  a    
+ silk     9185 798 21.1     7526    10844   b   
+
+hybrid = 30S31YH:
+ method emmean  SE   df lower.CL upper.CL .group
+ pin      7836 798 21.1     6177     9495  a    
+ silk     8277 798 21.1     6618     9936  a    
+
+hybrid = BG7049H:
+ method emmean  SE   df lower.CL upper.CL .group
+ pin     11970 798 21.1    10311    13629  a    
+ silk    12833 798 21.1    11174    14492  a    
+
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+significance level used: alpha = 0.05 
+NOTE: If two or more means share the same grouping symbol,
+      then we cannot show them to be different.
+      But we also did not show them to be the same. </code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="coeficiente-de-determinação-r²" class="level1">
+<h1>Coeficiente de Determinação (R²)</h1>
+<p>Tem como objetivo indicar a proporção da variabilidade de uma variável que é explicada por outra. Um R² baixo indica relação fraca entre as variáveis.</p>
+<p>📌 <strong>Quando usar:</strong> Para avaliar a qualidade de ajuste de um modelo de regressão ou o poder preditivo entre variáveis.</p>
+<section id="relação-entre-índice-e-produtividade" class="level2">
+<h2 class="anchored" data-anchor-id="relação-entre-índice-e-produtividade">Relação entre índice e produtividade</h2>
+<p>Por fim, foi avaliada a associação entre o índice (<code>index</code>) e a produtividade (<code>yield</code>) com:</p>
+<ul>
+<li><p>Gráfico de dispersão com linha de regressão;</p></li>
+<li><p>Cálculo da correlação de Pearson;</p></li>
+<li><p>Cálculo do coeficiente de determinação (R²) manualmente: <code>cor^2 * 100</code>.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="do">### RELAÇÃO DE INDEX E YIELD</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>milho <span class="sc">|&gt;</span> </span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(index, yield))<span class="sc">+</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula4_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="do">## coeficiente de determinação mostra a variação de x em função de y</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>cor1 <span class="ot">&lt;-</span> <span class="fu">cor</span>(milho<span class="sc">$</span>index, milho<span class="sc">$</span>yield)</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>cor1<span class="sc">*</span>cor1<span class="sc">*</span><span class="dv">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.371246</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># valor muito baixo está indicando que a relação entre eles é baixa</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(milho<span class="sc">$</span>index, milho<span class="sc">$</span>yield)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's product-moment correlation
+
+data:  milho$index and milho$yield
+t = -1.7692, df = 46, p-value = 0.08348
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.50064223  0.03417223
+sample estimates:
+       cor 
+-0.2524133 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># testa a hipótese de associaçao entre as duas variáveis e mostra se ela é significativa</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="conclusão" class="level3">
+<h3 class="anchored" data-anchor-id="conclusão"><strong>Conclusão</strong></h3>
+<p>A correlação entre <code>index</code> e <code>yield</code> foi estatisticamente significativa, mas de <strong>baixa magnitude</strong>, indicando que o índice avaliado não explica bem a produtividade.</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© D. O. Ramos</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Feito com ❤️ e Quarto</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

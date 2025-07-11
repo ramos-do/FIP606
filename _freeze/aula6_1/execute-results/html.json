@@ -1,0 +1,15 @@
+{
+  "hash": "bd0b9831d519d12e50dbdd4da74d2342",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Aula 6 - Modelo Misto\"\nauthor: Danilo Oliveira Ramos\nformat: html\n---\n\n\n\n# Modelo Misto\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(readxl)\nlibrary(lme4)\nlibrary(tidyverse)\nestande <- read_excel(\"dados-diversos.xlsx\", sheet = \"estande\")\nm_misto <- lmer(nplants ~ trat + (1 | exp/bloco), data = estande)\nsummary(m_misto)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\nLinear mixed model fit by REML ['lmerMod']\nFormula: nplants ~ trat + (1 | exp/bloco)\n   Data: estande\n\nREML criterion at convergence: 575.8\n\nScaled residuals: \n     Min       1Q   Median       3Q      Max \n-2.21697 -0.63351  0.04292  0.67094  1.92907 \n\nRandom effects:\n Groups    Name        Variance Std.Dev.\n bloco:exp (Intercept)  54.76    7.40   \n exp       (Intercept) 377.43   19.43   \n Residual              134.99   11.62   \nNumber of obs: 72, groups:  bloco:exp, 12; exp, 3\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept) 69.74524   11.57191   6.027\ntrat        -0.56869    0.08314  -6.840\n\nCorrelation of Fixed Effects:\n     (Intr)\ntrat -0.111\n```\n\n\n:::\n\n```{.r .cell-code}\ncar::Anova(m_misto)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\nAnalysis of Deviance Table (Type II Wald chisquare tests)\n\nResponse: nplants\n      Chisq Df Pr(>Chisq)    \ntrat 46.788  1  7.909e-12 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n```\n\n\n:::\n\n```{.r .cell-code}\n# avaliar os efeitos aleatórios de experimentos e de bloco, nese caso os efeitos de exp dentro de bloco\n# nesse caso tem que fazer o anova para verificar se o valor de p é significativo\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nestande |> \n  ggplot(aes(trat, nplants, colour = factor(exp)))+\n  geom_point()+\n  #geom_smooth(method = \"lm\", se = FALSE)+\n  geom_abline(intercept = 69.74, slope = -0.568, linewidth = 2)+\n  geom_abline(intercept = 43, slope = -0.73, linetype = \"dashed\")+\n  geom_abline(intercept = 93, slope = -0.40, linetype = \"dashed\")\n```\n\n::: {.cell-output-display}\n![](aula6_1_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

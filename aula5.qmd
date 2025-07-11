@@ -1,0 +1,94 @@
+---
+title: "Aula 5 - AUDPC"
+author: Danilo Oliveira Ramos
+format: html
+---
+
+# AUDPC (Área Abaixo da Curva de Progresso da Doença)
+
+Vamos usar um novo pacote, o `epifitter`. Além disso, vamos filtrar os dados que iremos analisar.
+
+```{r}
+library(tidyverse)
+library(epifitter)
+oidio <- PowderyMildew
+
+#oidio|> 
+  #ggplot(aes(time, sev))+
+  #geom_point()+
+  #facet_grid(moisture ~ irrigation_type)
+
+oidio |> 
+  filter(irrigation_type %in% c("MS", "MS above canopy", "Overhead")) |>
+  ggplot(aes(time, sev))+
+  geom_point()+
+  facet_grid(moisture ~ irrigation_type)
+# %in% função para pegar dentro de Irrigation_type o MS
+```
+
+Foi feita uma **seleção de tratamentos de irrigação específicos** (três tipos) para análise. O operador `%in%` é usado para filtrar esses valores dentro da variável `irrigation_type`.
+
+Em seguida, Visualizamos a progressão da doença. **Gráficos de pontos** da **severidade da doença ao longo do tempo** (`sev` x `time`), separados por **tipo de irrigação** e **nível de umidade**. Isso permite observar padrões visuais de como a doença evolui em diferentes condições ambientais.
+
+## Cálculo do AUDPC
+
+```{r}
+oidio2 <- oidio |> filter(irrigation_type %in% c("MS", "MS above canopy", "Overhead"))
+
+oidio3 <- oidio2 |> 
+  group_by(irrigation_type, moisture, block) |> 
+  summarize(AUDPC = AUDPC(time, sev))
+```
+
+A métrica **AUDPC (Área Abaixo da Curva de Progresso da Doença)** é calculada para cada combinação de `irrigation_type`, `moisture` e `block`. O AUDPC resume a **intensidade e duração da doença** ao longo do tempo em um único número.
+
+## Visualização dos AUDPCs por grupo
+
+```{r}
+oidio3 |> 
+  ggplot(aes(irrigation_type, AUDPC, color = moisture))+
+  geom_point(size = 2)+
+  scale_y_continuous(limits = c(0,20))
+```
+
+Mostra os valores de **AUDPC** para cada tipo de irrigação, coloridos por **nível de umidade**. Serve para explorar **diferenças potenciais entre tratamentos**.
+
+Ainda **não foi feita nenhuma análise estatística inferencial** (ex: ANOVA, Kruskal-Wallis), mas os dados estão prontos para isso.
+
+## Modelo linear com interação
+
+```{r}
+model_oidio <- lm(AUDPC ~ irrigation_type * moisture, data = oidio3)
+anova(model_oidio)
+```
+
+A função `anova()` testa se esses efeitos explicam significativamente a variação em `AUDPC`
+
+### Diagnóstico de resíduos
+
+```{r}
+library(DHARMa)
+plot(simulateResiduals(model_oidio))
+```
+
+### Médias ajustadas (emmeans)
+
+```{r}
+library(emmeans)
+library(multcomp)
+library(agricolae)
+medias_oidio <- emmeans(model_oidio, ~ irrigation_type | moisture)
+
+#inverter irrigation_type | moisture para comparar
+
+medias_oidio
+cld(medias_oidio) # Cria letras compactas que indicam quais grupos são significativamente diferentes
+cv.model(model_oidio) #Calcula o coeficiente de variação (CV)
+```
+
+|           | High moisture | Moderate moisture |
+|-----------|:-------------:|:-----------------:|
+| MS        |   8.52 A a    |     11.18 A b     |
+| MS AC     |   3.99 B a    |     4.86 B b      |
+| Overhead  |   3.68 B a    |     3.81 C a      |
+| cv = 6.41 |               |                   |

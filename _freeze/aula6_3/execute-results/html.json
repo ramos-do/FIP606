@@ -1,0 +1,15 @@
+{
+  "hash": "f10f5b7339ee28acb8b549e544a93ab4",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Aula 6 - Box Cox\"\nauthor: Danilo Oliveira Ramos\nformat: html\n---\n\n\n\n# Box Cox\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(MASS)\nlibrary(DHARMa)\nlibrary(tidyverse)\n\ninsects <- InsectSprays\n\nm1 <- lm(sqrt(count) ~ spray, data = insects)\nplot(simulateResiduals(m1))\n```\n\n::: {.cell-output-display}\n![](aula6_3_files/figure-html/unnamed-chunk-1-1.png){width=672}\n:::\n\n```{.r .cell-code}\nboxcox(lm(insects$count + 0.1 ~ 1))\n```\n\n::: {.cell-output-display}\n![](aula6_3_files/figure-html/unnamed-chunk-1-2.png){width=672}\n:::\n\n```{.r .cell-code}\n#qual o valor de x quando o valor de y é máximo\n\nb <- boxcox(lm(insects$count + 0.1 ~ 1))\n\nlambda <- b$x[which.max(b$y)]\nlambda\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 0.4242424\n```\n\n\n:::\n\n```{.r .cell-code}\n#lambda é o valor onde y é maximo\n\ninsects <- insects |> \n  mutate(count2 = (count^lambda-1/lambda)) |> \n  mutate(count3 = sqrt(count))\n\ninsects$count2 <- (insects$count^lambda-1/lambda)\nhist(insects$count2)\n```\n\n::: {.cell-output-display}\n![](aula6_3_files/figure-html/unnamed-chunk-1-3.png){width=672}\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

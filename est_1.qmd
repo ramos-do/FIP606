@@ -1,0 +1,8 @@
+---
+title: "Análises Estatísticas no R"
+format: html
+about:
+  id: hero-heading
+  template: jolla
+  image: images/data_r.png
+---

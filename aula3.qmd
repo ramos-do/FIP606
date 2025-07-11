@@ -1,0 +1,172 @@
+---
+title: "Aula 3 - Normalidade de dados"
+format: html
+editor: visual
+---
+
+# Testar normalidade dos dados
+
+Vamos testar a normalidade dos dados, o que é essencial para aplicar testes paramétricos como o **teste t**. Para isso, são utilizados o teste de **Shapiro-Wilk** (`shapiro.test`) e **histogramas** (`hist`) com o objetivo de verificar a distribuição das variáveis. Também vamos avaliar a **homogeneidade de variâncias** com o `var.test`, outra premissa para o uso de testes t.
+
+Vamos começar importando e explorando os dados que serão analisados:
+
+```{r}
+library (gsheet)
+dat_mg <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=983033137#gid=983033137")
+
+library(tidyverse)
+dat_mg |> 
+  ggplot(aes(trat, comp))+
+  geom_jitter(width = 0.1)
+
+dat_mg2 <- dat_mg |> 
+  pivot_wider(names_from = trat, values_from= comp) |> 
+  select(-rep)
+dat_mg2
+
+attach(dat_mg2) 
+t.test(control, Mg2)
+#Com o attach(), o R passa a reconhecer diretamente as colunas control e Mg2 sem usar o $
+
+attach(dat_mg2)
+t_results <- t.test(control, Mg2)
+
+
+library(report)
+report(t_results)
+
+library(rstatix)
+
+t_test(comp ~ trat, data = dat_mg)
+
+library(ggpubr)
+p <- ggboxplot(
+  dat_mg, x = "trat", y = "comp",
+  color = "trat", palette = "jco"
+) + ylim(0, 20)
+```
+
+```{r}
+shapiro.test(control)  # para o grupo controle
+shapiro.test(Mg2)      # para o grupo magnésio
+
+hist(control, main = "Histograma - Controle", col = "lightblue")
+hist(Mg2, main = "Histograma - Mg2", col = "lightgreen")
+
+var.test(control, Mg2)
+
+#Premissar para usar o teste T: Testar normalidade e variância homogêneas
+```
+
+-   No teste de **Shapiro-Wilk** o `p > 0.05`, logo os dados podem ser considerados normais.
+
+-   No **var.test** o valor `p > 0.05`, logo as variâncias são homogêneas.
+
+# Teste t amostras dependentes
+
+Vamos analisar o conjunto de dados "escala" e realizar o teste t pareado com `t_test` para comparar a acurácia entre dois métodos de avaliação. Os dados são visualizados com `geom_boxplot` e os grupos são filtrados para aplicar o teste de normalidade separadamente em cada um. Caso os dados não sejam normais, utiliza-se o teste de Wilcoxon (`wilcox.test`), equivalente não paramétrico ao teste t.
+
+```{r}
+# Carregar pacote necessário
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(rstatix)  # Para a função t_test()
+
+# Ler os dados da aba 'escala'
+escala <- read_excel("dados-diversos.xlsx", sheet = "escala")
+
+# Teste t para amostras pareadas (acurácia entre avaliações)
+t_test(acuracia ~ assessment, 
+       data = escala,
+       paired = TRUE,
+       var.equal = FALSE)
+```
+
+### Boxplot para visualizar a diferença entre avaliações
+
+```{r}
+escala |> 
+  ggplot(aes(assessment, acuracia))+ 
+  geom_boxplot()
+```
+
+### Filtrando os dados
+
+```{r}
+unaided <- escala |> 
+  filter(assessment == "Unaided") |> 
+  pull(acuracia)
+
+aided <- escala |> 
+  filter(assessment == "Aided1") |> 
+  pull(acuracia)
+```
+
+### Teste de igualdade de variâncias
+
+```{r}
+var.test(unaided, aided)
+```
+
+### Verificar distribuição e variância
+
+```{r}
+hist(unaided)
+shapiro.test(unaided)
+shapiro.test(aided)
+```
+
+Neste conjunto de análises, buscou-se avaliar o efeito de diferentes métodos de avaliação sobre a acurácia de observações utilizando dados provenientes da planilha "escala". Inicialmente, realizou-se a verificação das premissas para aplicação do teste t pareado, incluindo a avaliação da normalidade dos dados por meio do teste de Shapiro-Wilk e a homogeneidade de variâncias via `var.test()`.
+
+Em seguida, foi aplicado o teste t para amostras dependentes (pareadas), comparando a acurácia das avaliações "Unaided" e "Aided1". Os dados foram visualizados por meio de boxplots, permitindo observar graficamente a distribuição das acurácias em cada condição. Também foram utilizados métodos alternativos de teste, como o `t_test()` do pacote `rstatix` e `report()` para a interpretação estatística dos resultados.
+
+Além disso, cuidados foram tomados quanto à padronização de nomes de categorias da variável `assessment`, uma vez que diferenças de capitalização e possíveis espaços em branco poderiam comprometer a correta filtragem dos dados. Esse aspecto evidenciou a importância da limpeza e padronização das variáveis categóricas para garantir a robustez e confiabilidade dos testes estatísticos subsequentes.
+
+De forma geral, os procedimentos realizados permitiram comparar de maneira apropriada os métodos avaliativos utilizados, fornecendo evidências quantitativas para apoiar a tomada de decisão quanto à acurácia das observações analisadas.
+
+# Teste equivalente ao t para dados não normais (Wilcoxn) de amostras pareadas
+
+O teste de Wilcoxon para amostras pareadas é uma alternativa não paramétrica ao teste t pareado, utilizado quando os dados não seguem distribuição normal. Ele compara duas medições feitas nos mesmos indivíduos, avaliando se há diferença significativa entre elas. Em vez de usar médias e desvios padrão, ele trabalha com os sinais e ranks das diferenças entre os pares. É ideal para dados dependentes e não normais.
+
+```{r}
+wilcox.test(unaided, aided)
+```
+
+`p-value = 1.083e-05` =\> Rejeitamos a hipótese nula
+
+Como o valor de W foi **0**, é um sinal fortíssimo de que os dados de um grupo (provavelmente `aided`) foram sistematicamente maiores que os do outro. Portanto, **o auxílio teve efeito real nos resultados** — e não foi coincidência.
+
+# Praticando os conhecimentos 
+
+Vamos praticar os conceitos aprendidos para comparar a taxa de crescimento micelial entre diferentes espécies de fungos da planilha "micelial". Para isso, vamos começar realizando uma ANOVA. As premissas são verificadas com histogramas, `shapiro.test`, e testes de homogeneidade (Bartlett e Levene). As médias são comparadas com `emmeans`, `cld` e `pwpm`, fornecendo uma interpretação mais detalhada das diferenças.
+
+```{r}
+micelial <- readxl::read_excel("dados-diversos.xlsx", sheet = "micelial")
+
+micelial |> 
+  ggplot(aes(especie, tcm))+
+  geom_boxplot()+
+  geom_jitter(width = 0.1)
+
+anoval <- aov(tcm ~ especie, data = micelial)
+# outra alternativa : anova <- lm (tcm ~ especie, data = micelial)
+anova(anoval)
+hist(residuals(anoval))
+shapiro.test(residuals(anoval))
+
+#teste de homogeneidade das variancias
+bartlett.test(tcm ~ especie, data = micelial)
+levene_test(tcm ~ especie, data = micelial)
+
+
+library(emmeans)
+m <- emmeans(anoval, ~ especie)
+m
+
+library(multcomp)
+library(multcompView)
+cld(m)
+
+pwpm(m)
+```

@@ -1,0 +1,37 @@
+---
+title: "Sobre mim"
+format: html
+about:
+  id: hero-heading
+  template: jolla
+  image: images/danilo.png
+  links:
+    - icon: github
+      href: https://github.com/ramos-do
+    - icon: linkedin
+      href: https://www.linkedin.com/in/danilo-ramos-718146360/
+    - icon: instagram
+      href: https://www.instagram.com/ramosdaniloo/
+---
+
+```{=html}
+<style>
+body {
+  background-image: url('images/fundo5.png');
+}
+</style>
+```
+
+<p style="text-align: central;">
+
+Olá pessoas!! Me chamo **Danilo Oliveira Ramos** e seja bem vindo ao meu website!
+
+</p>
+
+<p style="text-align: central;">
+
+Sou Bacharel em **Ciências Biológicas** (2021) e Mestre em **Fitopatologia** (2024) pela Universidade Federal de Viçosa (UFV). No momento sou doutorando no programa de pós-graduação em [Fitopalogia](https://www.dfp.ufv.br/) pela mesma instituição. Sou apaixonado pelo Reino Fungi e desenvolvo minhas pesquisas no [**MICOLAB**](https://www.instagram.com/micolabufv/) sob orientação do professor Olinto Liparini Pereira.
+
+</p>
+
+<p style="text-align: central;">Esse é meu caderno de aulas da disciplina FIP 606 - **Análise e visualização de dados em Fitopatologia**, ministrada pelo professor [Emerson Del Ponte](https://github.com/emdelponte).</p>

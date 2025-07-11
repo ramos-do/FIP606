@@ -1,0 +1,261 @@
+---
+title: "Aula 4"
+author: Danilo Oliveira Ramos
+format: html
+---
+
+# Análise de dados
+
+## **Importação dos dados**
+
+Foi utilizado o pacote `readxl` para importar a aba `"fungicida_campo"` do arquivo `dados-diversos.xlsx`, contendo dados de produtividade (`PROD`), severidade da ferrugem (`FER`), desfolha (`DFC`), tratamentos (`TRAT`) e blocos (`BLOCO`).
+
+```{r}
+## aula 30/04 
+library(readxl)
+
+campo <- readxl::read_excel("dados-diversos.xlsx", sheet = "fungicida_campo")
+
+
+
+campo$TRAT <- factor(campo$TRAT)
+campo$BLOCO <- factor(campo$BLOCO)
+m_campo <- lm(log(FER) ~ BLOCO + TRAT, data = campo)
+anova(m_campo)
+
+library(tidyverse)
+library(emmeans)
+library(dplyr)
+library(DHARMa)
+plot(simulateResiduals(m_campo))
+
+means_campo <- emmeans(m_campo, ~ TRAT, type = "response")
+means_campo
+cv <- (sigma(m_campo) / mean(campo$FER)) * 100
+cv
+
+
+plot(means_campo)
+
+library(multcomp)
+cld(means_campo) #tratamento 6 é o único que se diferencia
+pwpm(means_campo) #função pwpm faz comparações em uma matriz
+```
+
+# **Análise de Correlação de Pearson**
+
+Utilizada para verificar se existe associação linear entre duas variáveis quantitativas.
+
+📌 **Quando usar:** Quando se quer avaliar a força e direção da relação entre duas variáveis numéricas.
+
+Nesse caso, foi calculado o coeficiente de correlação entre `FER` (ferrugem) e `PROD` (produtividade), e também entre `FER` e `DFC` (desfolha). A função `cor.test()` foi utilizada para verificar a significância estatística da correlação com `DFC`.
+
+```{r}
+cor(campo$FER, campo$PROD)
+cor.test(campo$FER, campo$DFC)
+```
+
+# Regressão linear simples
+
+Tem como objetivo estimar a relação entre uma variável independente (X) e uma variável dependente (Y), ajustando uma reta.
+
+📌 **Quando usar:** Para entender a influência de uma variável contínua sobre outra e gerar modelos preditivos simples.
+
+Nesse caso, foram gerados dois gráficos exploratórios com `ggplot2`:
+
+-   Um **gráfico de dispersão** entre `FER` e `DFC`, com ajuste de linha de regressão linear (`geom_smooth(method = 'lm')`):
+
+```{r}
+campo |> 
+  ggplot(aes(FER, DFC))+
+  geom_point()+
+  geom_smooth(method = 'lm')
+```
+
+-   Um **gráfico de produtividade por tratamento**, com pontos ligeiramente deslocados (`geom_jitter`) e barras vermelhas representando média e intervalo de confiança calculado via bootstrap (`stat_summary()`):
+
+```{r}
+campo |> 
+  ggplot(aes(TRAT, PROD))+
+  geom_jitter(width = 0.1)+
+  stat_summary(fun.data = 'mean_cl_boot', colour = 'red', width = 0.3)
+```
+
+# Análise de Variância (ANOVA) com Modelo Linear
+
+Tem como objetivo testar se há diferenças estatísticas entre as médias de dois ou mais grupos.
+
+📌 **Quando usar:** Quando se comparam médias entre grupos, especialmente em experimentos com delineamento em blocos.
+
+Aqui, um modelo linear foi ajustado para verificar o efeito de diferentes tratamentos (`TRAT`) e blocos (`BLOCO`) sobre a severidade da ferrugem (`FER`, transformada com log). As variáveis `TRAT` e `BLOCO` foram convertidas em fatores. Em seguida, foi ajustado um modelo linear do logaritmo da variável `FER` como resposta, em função de tratamento e bloco.
+
+A função `anova()` retornou os efeitos principais. A transformação logarítmica foi utilizada para atender pressupostos de normalidade e homocedasticidade.
+
+```{r}
+campo$TRAT <- factor(campo$TRAT)
+campo$BLOCO <- factor(campo$BLOCO)
+m_campo <- lm(log(FER) ~ BLOCO + TRAT, data = campo)
+anova(m_campo)
+```
+
+# Diagnóstico de Resíduos com DHARMa
+
+Tem como objetivo verificar se os resíduos do modelo atendem aos pressupostos estatísticos: normalidade, homocedasticidade, independência.
+
+-   `simulateResiduals()` simula e plota os resíduos.
+
+-   Essencial para validar a adequação do modelo.
+
+📌 **Quando usar:** Sempre após ajustar modelos (lm ou lmer), para garantir que as inferências são confiáveis.
+
+Com o pacote `DHARMa`, foram simulados e visualizados os resíduos do modelo linear para avaliar a adequação do ajuste.
+
+```{r}
+library(DHARMa)
+plot(simulateResiduals(m_campo))
+```
+
+# Comparação de médias
+
+Tem como objetivo identificar quais grupos (tratamentos) diferem entre si, após uma ANOVA significativa.
+
+📌 **Quando usar:** Após uma ANOVA significativa, para determinar *quais* grupos são diferentes entre si.
+
+-   O pacote `emmeans()` calcula as médias ajustadas dos tratamentos com base no modelo;
+
+-   Cálculo do coeficiente de variação com `cv <- (sigma(m_campo) / mean(campo$FER)) * 100`;
+
+-   A função `cld()` aplica letras distintas a grupos significativamente diferentes.
+
+<!-- -->
+
+-   A função `pwpm()` mostra comparações par a par em forma de matriz.
+
+```{r}
+library(emmeans)
+means_campo <- emmeans(m_campo, ~ TRAT, type = "response")
+means_campo
+cv <- (sigma(m_campo) / mean(campo$FER)) * 100
+cv
+
+plot(means_campo)
+
+library(multcomp)
+cld(means_campo) #tratamento 6 é o único que se diferencia
+pwpm(means_campo) #função pwpm faz comparações em uma matriz
+```
+
+# Modelos Lineares Mistos (LMM)
+
+Tem como obejivo analisar dados com estrutura hierárquica ou com efeitos aleatórios, como blocos, parcelas ou repetições. Permite avaliar o efeito de tratamentos (fixos) controlando variações não controladas (aleatórias), como o efeito de blocos.
+
+📌 **Quando usar:** Em experimentos com estrutura complexa, como blocos aninhados, réplicas ou medidas repetidas.
+
+## Análise dos dados do experimento com milho
+
+Vamos importar a aba `"milho"` da mesma planilha, contendo variáveis como `hybrid`, `method`, `index`, `yield`, `block`, entre outras. Em seguida, vamos gerar gráficos de dispersão para a variável `index`, coloridos por método, por híbrido e com facetamento por `method`. Utilizamos o operador `interaction()` para criar uma nova variável identificadora `hybrid_block`.
+
+```{r}
+milho <- readxl::read_excel("dados-diversos.xlsx", sheet = "milho")
+# blocos e parcelas 
+# parcial subdivididas
+
+milho |> 
+  ggplot(aes(hybrid, index, color = method))+
+  geom_jitter(width = 0.1)+
+  coord_flip()+
+  facet_wrap(~ method)
+
+milho$hybrid_block <- interaction(milho$hybrid, milho$block)
+
+milho |> 
+  mutate(hybrid_block = interaction(hybrid,block))
+
+# duas formas de modificar -encontrar o identificador de cada hibrido
+```
+
+## Modelagem mista
+
+Utilizou-se a função `lmer()` do pacote `lme4` para ajustar um modelo misto com efeitos fixos de `hybrid`, `method` e sua interação, e efeitos aleatórios de blocos aninhados em híbridos. A função `car::Anova` foi utilizada para tester os efeitos fixos, e os resíduos foram simulados com a função `simulateResiduals()`.
+
+```{r}
+library(lme4)
+m_milho <- lmer(index ~ hybrid*method + (1 | block:hybrid_block), data = milho)
+car::Anova(m_milho)
+plot(simulateResiduals(m_milho))
+
+# usar o lmer para variáveis aleatórias, o modelo lm considera variáveis fixas 
+
+
+## para yield:
+
+m_milho <- lmer(yield ~ hybrid*method + (1 | block:hybrid_block), data = milho)
+car::Anova(m_milho)
+plot(simulateResiduals(m_milho))
+
+media_milho <- emmeans(m_milho, ~ method | hybrid)
+cld(media_milho, Letters = letters)
+```
+
+### Comparações múltiplas
+
+Com `emmeans`, foram estimadas as médias ajustadas por método dentro de cada híbrido. Em seguida, realizou-se o agrupamento com letras via `cld()`.
+
+```{r}
+media_milho <- emmeans(m_milho, ~ method | hybrid)
+cld(media_milho, Letters = letters)
+
+# método pin discrima mais que o método silk
+```
+
+### Modelagem para produtividade
+
+Repetiu-se a modelagem mista, agora com a variável `yield` como resposta. Os procedimentos foram os mesmos: ajuste com `lmer()`, testes com `Anova()` e comparação de médias com `emmeans` e `cld()`.
+
+```{r}
+## para yield:
+m_milho <- lmer(yield ~ hybrid*method + (1 | block:hybrid_block), data = milho)
+car::Anova(m_milho)
+plot(simulateResiduals(m_milho))
+
+media_milho <- emmeans(m_milho, ~ method | hybrid)
+cld(media_milho, Letters = letters)
+```
+
+# Coeficiente de Determinação (R²)
+
+Tem como objetivo indicar a proporção da variabilidade de uma variável que é explicada por outra. Um R² baixo indica relação fraca entre as variáveis.
+
+📌 **Quando usar:** Para avaliar a qualidade de ajuste de um modelo de regressão ou o poder preditivo entre variáveis.
+
+## Relação entre índice e produtividade
+
+Por fim, foi avaliada a associação entre o índice (`index`) e a produtividade (`yield`) com:
+
+-   Gráfico de dispersão com linha de regressão;
+
+-   Cálculo da correlação de Pearson;
+
+-   Cálculo do coeficiente de determinação (R²) manualmente: `cor^2 * 100`.
+
+```{r}
+### RELAÇÃO DE INDEX E YIELD
+
+milho |> 
+  ggplot(aes(index, yield))+
+  geom_point()+
+  geom_smooth(method = 'lm')
+
+## coeficiente de determinação mostra a variação de x em função de y
+
+cor1 <- cor(milho$index, milho$yield)
+cor1*cor1*100
+# valor muito baixo está indicando que a relação entre eles é baixa
+
+cor.test(milho$index, milho$yield)
+# testa a hipótese de associaçao entre as duas variáveis e mostra se ela é significativa
+```
+
+### **Conclusão**
+
+A correlação entre `index` e `yield` foi estatisticamente significativa, mas de **baixa magnitude**, indicando que o índice avaliado não explica bem a produtividade.

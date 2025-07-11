@@ -1,0 +1,30 @@
+---
+title: "Aula 6 - Modelo Misto"
+author: Danilo Oliveira Ramos
+format: html
+---
+
+# Modelo Misto
+
+```{r}
+library(readxl)
+library(lme4)
+library(tidyverse)
+estande <- read_excel("dados-diversos.xlsx", sheet = "estande")
+m_misto <- lmer(nplants ~ trat + (1 | exp/bloco), data = estande)
+summary(m_misto)
+car::Anova(m_misto)
+
+# avaliar os efeitos aleatórios de experimentos e de bloco, nese caso os efeitos de exp dentro de bloco
+# nesse caso tem que fazer o anova para verificar se o valor de p é significativo
+```
+
+```{r}
+estande |> 
+  ggplot(aes(trat, nplants, colour = factor(exp)))+
+  geom_point()+
+  #geom_smooth(method = "lm", se = FALSE)+
+  geom_abline(intercept = 69.74, slope = -0.568, linewidth = 2)+
+  geom_abline(intercept = 43, slope = -0.73, linetype = "dashed")+
+  geom_abline(intercept = 93, slope = -0.40, linetype = "dashed")
+```

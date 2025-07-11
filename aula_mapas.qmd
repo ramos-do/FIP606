@@ -1,0 +1,99 @@
+---
+title: "Criando Mapas"
+author: Danilo Oliveira Ramos
+format: html
+editor_options: 
+  chunk_output_type: console
+---
+
+# Mapas no R
+
+Para criar um mapa, vamos começar importando um conjunto de dados sobre a ferrugem do café na Etiópia que está no arquivo de dados na nuvem do Google Sheets utilizando a função `gsheet2tbl()` do pacote `gsheet`.
+
+O objeto `cr` passou a conter os dados de latitude (`lat`), longitude (`lon`) e incidência da ferrugem (`inc`) em diversas fazendas etíopes.
+
+```{r}
+library(gsheet)
+cr <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=1871397229#gid=1871397229")
+```
+
+Em seguida, usaremos a função `datatable()` do pacote \[DT\] para visualização dos dados
+
+```{r}
+library(DT)
+datatable(cr)
+```
+
+##  Visualização inicial dos pontos no espaço
+
+Com o auxílio do pacote `ggplot2`, um gráfico de dispersão simples foi gerado para plotar os pontos geográficos com base nas coordenadas longitudinais e latitudinais.
+
+```{r}
+library(tidyverse)
+
+cr |> 
+  ggplot(aes(lon, lat))+
+  geom_point()
+```
+
+Essa etapa ajuda a verificar se os dados espaciais estão coerentes antes de sobrepor sobre um mapa.
+
+## O Mapa
+
+Para criar o mapa base, foi utilizado o pacote `rnaturalearth`, que fornece formas geográficas no formato `sf` (simple features). A função `ne_states()` foi utilizada para obter os limites administrativos da Etiópia.
+
+*Obs.:* Para acessar os níveis administrativos mais detalhados, foi necessária a instalação do pacote `rnaturalearthhires`, por meio do repositório do ROpenSci.
+
+```{r}
+library(rnaturalearth)
+library(remotes)
+remotes::install_github("ropensci/rnaturalearthhires")
+
+install.packages(
+  "rnaturalearthhires",
+  repos = "https://ropensci.r-universe.dev",
+  type = "source"
+)
+EHT <- ne_states(country = "Ethiopia",
+                 returnclass = "sf")
+
+
+library(ggthemes)
+library(ggspatial)
+
+EHT |> 
+  ggplot()+
+  geom_sf(fill="white")+
+  geom_point(data =cr, aes(lon, lat, color = inc))+
+  scale_color_viridis_c()+
+  theme_minimal()+
+  annotation_scale(location = "tl")+
+  annotation_north_arrow(location = "br", which_north = "true")+
+  labs(title = "Ferrugem do café na Etiópia", 
+       x = "Longitude", y = "Latitude",
+       subtitle = "Levantamento em Fazendas",
+       caption = "Fonte: Del Ponte et al. (2025)",
+       color = "Incidência (%)")
+```
+
+Com a geometria da Etiópia (`EHT`) e os dados de campo (`cr`), o mapa foi construído utilizando `ggplot2` com camadas adicionais para enriquecer a visualização:
+
+**Componentes importantes do mapa:**
+
+-    `geom_sf()` → plota os limites geográficos da Etiópia;
+
+-    `geom_point()` → adiciona os pontos das fazendas, coloridos pela incidência de ferrugem (`inc`);
+
+-    `scale_color_viridis_c()` → aplica uma escala de cores perceptualmente uniforme;
+
+-    `annotation_scale()` e `annotation_north_arrow()` → adicionam escala e seta norte;
+
+-    `theme_minimal()` → aplica um tema limpo ao mapa.
+
+## Salvamento da figura
+
+```{r}
+ggsave("mapa_etiopia.png", bg = "white", width = 6.09, height = 5.83)
+```
+
+O mapa final foi exportado como imagem PNG com fundo branco e dimensões definidas.

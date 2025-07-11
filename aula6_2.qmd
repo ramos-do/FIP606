@@ -1,0 +1,39 @@
+---
+title: "Aula 6 -"
+author: Danilo Oliveira Ramos
+format: html
+---
+
+# Análise de Regressão
+
+```{r}
+library(readxl)
+library(lme4)
+library(tidyverse)
+estande <- read_excel("dados-diversos.xlsx", sheet = "estande")
+exp1 <- estande |> 
+  filter(exp == 1)
+
+m_exp1 <- lm(nplants ~ trat + bloco, data = exp1)
+summary(m_exp1)
+
+#primeiro faz somente com trat, em seguida trat + bloco
+#no exp1 não rejeita hipótese nula
+
+exp2 <- estande |> 
+  filter(exp == 2)
+
+m_exp2 <- lm(nplants ~ trat, data = exp2)
+summary(m_exp2)
+
+#rejeita hipótese nula nesse caso do exp2
+
+exp3 <- estande |> 
+  filter(exp == 3)
+
+m_exp3 <- lm(nplants ~ trat, data = exp3)
+summary(m_exp3)
+
+
+#modelo misto tem efeitos fixos e aleatórios, nesse caso o tratamento (trat) é um efeito fixo
+```

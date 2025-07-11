@@ -1,0 +1,79 @@
+project:
+  type: website
+  output-dir: docs
+
+execute: 
+  cache: true
+  freeze: auto
+
+website:
+  title: "FIP 606"
+  favicon: images/site.png
+  page-navigation: true
+
+  navbar:
+    pinned: true
+    background: "#006400"
+    collapse-below: lg
+    search: true
+    left:
+      - icon: house 
+        href: index.qmd
+        text: Home
+      - text: "Iniciando no R"
+        icon: bookmark
+        menu:
+          - text: "Introdução ao R"
+            file: aula1.qmd
+          - text: "Ler dados de arquivos"
+            file: aula2.qmd
+      - text: "Principais pacotes"
+        icon: box-seam
+        file: pacotes.qmd
+      - text: "Análises Estatísticas no R"
+        icon: file-earmark-bar-graph
+        menu:
+          - text: "Testar normalidade dos dados"
+            file: aula3.qmd
+          - text: "Análise de dados"
+            file: aula4.qmd
+          - text: "Transformação de dados"
+            file: aula3_2.qmd
+          - text: "Anova Fatorial"
+            file: aula3_1.qmd
+          - text: "Box Cox"
+            file: aula6_3.qmd            
+          - text: "Regressão não-linear"
+            file: aula6.qmd
+          - text: "Análise de Regressão"
+            file: aula6_2.qmd            
+          - text: "Modelo Misto"
+            file: aula6_1.qmd            
+      - text: "Mapas no R"
+        icon: globe-central-south-asia
+        file: aula_mapas.qmd
+    
+    right:
+      - icon: github
+        href: https://github.com/ramos-do
+      - icon: linkedin
+        href: https://www.linkedin.com/in/danilo-ramos-718146360/
+      - icon: instagram
+        href: https://www.instagram.com/ramosdaniloo/
+
+  page-footer:
+    background: light
+    left: "© D. O. Ramos"
+    right: "Feito com ❤️ e Quarto"
+
+format:
+  html:
+    fontsize: 1.1em
+    theme: 
+      light: flatly
+      dark: darkly
+    css: styles.css
+    toc: true
+    warning: false
+
+editor: visual

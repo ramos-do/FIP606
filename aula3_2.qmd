@@ -1,0 +1,141 @@
+---
+title: "Aula 3 - Transformação de dados"
+author: Danilo Oliveira Ramos
+format: html
+---
+
+# Transformação de dados
+
+Vamos analisar o efeito de diferentes tipos de inseticidas (`spray`) sobre a contagem de insetos (`count`) usando métodos estatísticos adequados. Para isso vamos usar um dataset do R. O foco é verificar **diferenças significativas entre grupos**, garantindo que as **premissas dos testes paramétricos** sejam atendidas. Caso não sejam, parte-se para alternativas **não paramétricas** ou modelos mais adequados (GLM).
+
+```{r}
+library(tidyverse)
+library(datasets)
+
+insetos <- InsectSprays
+
+insetos |> 
+  ggplot(aes(spray, count))+
+  geom_boxplot()+
+  geom_jitter(width = 0.1)
+```
+
+## Teste de homogeneidade de variâncias
+
+```{r}
+bartlett.test(count ~ spray, data = insetos)
+# A normalidade pode ser um pouco violada, mas a homogeneidade de variância é crucial para ANOVA
+```
+
+Se **não houver homogeneidade**, o teste F do ANOVA **não é confiável**
+
+# Transformação Raiz quadrada (sqrt)
+
+```{r}
+m2 <- lm(sqrt(count) ~ spray, data = insetos)
+
+
+hist(residuals(m2))
+shapiro.test(residuals(m2)) #shapiro é mais rigoroso,especialmente com n pequeno
+qqnorm(residuals(m2)); qqline(residuals(m2))
+```
+
+Aplicou-se a transformação **raiz quadrada** (`sqrt`) na variável `count` para melhorar a homogeneidade das variâncias e a normalidade dos resíduos.
+
+Teste de **Shapiro-Wilk** e gráficos Q-Q para avaliar se os resíduos seguem distribuição normal (pré-requisito da ANOVA
+
+## Modelo linear com resposta transformada (ANOVA paramétrico)
+
+ANOVA é aplicada sobre os dados transformados, assumindo que os resíduos agora estão mais adequados.
+
+```{r}
+## aternativa 1 - transforma a resposta em raiz quadrada (sqrt)
+m3 <- lm(sqrt(count) ~ spray, data = insetos)
+hist(residuals(m3))
+shapiro.test(residuals(m3))
+qqnorm(residuals(m3))
+qqline(residuals(m3))
+anova(m3)
+```
+
+#### Comparação das médias:
+
+```{r}
+library(emmeans)
+library(multcomp)
+m33 <- emmeans(m3, ~ spray, type = "response")
+cld(m33)
+plot(m33)
+```
+
+Usa `emmeans` para obter **médias ajustadas** dos grupos e `cld()` para letras indicando **diferenças significativas** (grupos com letras diferentes são significativamente diferentes
+
+# Alternativa não paramétrica – Kruskal-Wallis
+
+Se nem transformação salvar os pressupostos, usamos o **teste de Kruskal-Wallis**, que é a versão **não paramétrica da ANOVA**
+
+```{r}
+## alternativa 2 - teste não paramétrico
+library(agricolae)
+library(rstatix)
+kruskal.test(count ~ spray, data = insetos)
+kruskal_test(insetos, count ~ spray)
+
+kruskal(insetos$count, insetos$spray, group = TRUE, console = TRUE)
+#Shapirowilk verifica a normalidade dos dados, o teste de homogeneidade de variancias (levene e barlett)
+```
+
+-    `kruskal()` do pacote **agricolae** já mostra quais grupos são diferentes, estilo letras post hoc.
+
+# Análise de resíduos
+
+```{r}
+## Aula 23/04
+library(DHARMa)
+m2
+plot(simulateResiduals(m3))
+#adicionei o sqrt no m2= fiz a raiz quadrada - m2 <- lm(sqrt(count) ~ spray, data = insetos) para que melhore a homogeneidade das variancias
+
+library(emmeans)
+#em caso que não conseque fazer transformações que deixem os dados normais deve-se utilizar os testes não paramétricos
+```
+
+Simula resíduos com o pacote **DHARMa**, que dá uma avaliação mais confiável da qualidade do ajuste do modelo, principalmente útil para GLM e dados de contagem.
+
+# Alternativa paramétrica com GLM Poisson
+
+```{r}
+m4 <- glm(count ~ spray, data = insetos, family = poisson())
+```
+
+Como `count` é uma variável de contagem, ajusta-se um **modelo linear generalizado (GLM)** com distribuição de Poisson, que **dispensa a normalidade dos resíduos**.
+
+```{r}
+anova(m4)
+
+library(car)
+library(multcomp)
+Anova(m4)
+plot(simulateResiduals(m4))
+
+medias_m4 <- emmeans(m4, ~ spray, type = "response")
+cld(medias_m4)
+
+library(performance)
+
+m2 <- lm(count ~ spray, data = insetos)
+hist(residuals(m2))
+shapiro.test(residuals(m2))
+qqnorm(residuals(m2))
+qqline(residuals(m2))
+```
+
+ANOVA no contexto GLM (`car::Anova`) + diagnóstico de resíduos + comparação entre grupos com `emmeans`.
+
+```{r}
+check_model(m2)
+```
+
+`performance::check_model()` fornece diagnóstico visual e numérico do modelo: normalidade, homogeneidade, outliers, colinearidade etc.
+
+O conjunto de dados `InsectSprays` foi analisado para comparar a eficácia de diferentes inseticidas com base na contagem de insetos. Inicialmente, foram avaliadas as suposições da ANOVA, revelando ausência de homogeneidade de variâncias (teste de Bartlett) e indícios de não normalidade nos resíduos (Shapiro-Wilk e Q-Q plot). Para contornar essas limitações, aplicou-se uma transformação raiz quadrada na variável resposta, permitindo o uso de ANOVA com comparação de médias por `emmeans`. Como alternativa, utilizou-se o teste não paramétrico de Kruskal-Wallis, mais robusto frente à violação dos pressupostos, e também um modelo GLM com distribuição de Poisson, mais apropriado para dados de contagem. Os diagnósticos dos modelos (via `DHARMa` e `check_model`) confirmaram a adequação do ajuste, permitindo concluir que houve diferenças estatísticas significativas entre os tipos de spray utilizados.

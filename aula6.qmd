@@ -1,0 +1,63 @@
+---
+title: "Aula 6 - Regressão não-linear"
+author: Danilo Oliveira Ramos
+format: html
+---
+
+# Regressão não-linear
+
+```{r}
+library(gsheet)
+library(tidyverse)
+fungi <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=465348652#gid=465348652")
+
+# visualizando os dados
+fungi |> 
+  group_by(code, dose) |> 
+  summarise(germination = mean(germination)) |> 
+  ggplot(aes(dose, germination))+
+  geom_point()+
+  geom_line()+
+  facet_wrap(~ code)
+
+FGT43 <- fungi |> 
+  group_by(code, dose) |> 
+  summarise(germination = mean(germination)) |> 
+  filter(code == "FGT43")
+
+library(drc)
+
+m43 <- drm(germination ~ dose, data = FGT43, fct = LL.3())
+
+# fct é o modelo escolhido
+
+summary(m43)
+AIC(m43)
+plot(m43)
+ED(m43, 50)
+
+# pacote para estimar a EC50
+library(ec50estimator)
+
+df_ec50 = estimate_EC50(germination ~ dose, 
+                        data = fungi, 
+                        isolate_col = "code", 
+                        strata_col =  "state", 
+                        interval = "delta", 
+                        fct = drc::LL.3())
+
+#gera uma tabela chamada df_ec50 c0m as informações que serão usadas para plotar o gráfico
+
+df_ec50 |> 
+  ggplot(aes(reorder(ID, Estimate), Estimate))+
+  geom_point()+
+  coord_flip()
+
+# reorder irá ordernar do menor para o maior de acordo com a estimativa de ec50
+
+df_ec50 |> 
+  ggplot(aes(x = Estimate))+
+  geom_histogram(bins = 5, color = "white")
+
+# histograma funciona para observar a distribuição dos dados, qual o padrão das frequencias
+```

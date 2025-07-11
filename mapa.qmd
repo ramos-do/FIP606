@@ -1,0 +1,10 @@
+---
+title: "Mapas no R"
+format: html
+about:
+  id: hero-heading
+  template: jolla
+  image: images/mapa_r.png
+---
+
+Para elaborar mapas no R devemos primeiro ativar os pacotes necessários

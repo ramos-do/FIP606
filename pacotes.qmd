@@ -1,0 +1,114 @@
+---
+title: "Principais Pacotes"
+author: Danilo Oliveira Ramos
+format: 
+  html:
+    theme: default
+    toc: false
+    number-sections: false
+    css: styles.css
+---
+
+<div style="text-align: center;">
+  <img src="images/logo_r.png" width="250">
+</div>
+
+# Principais pacotes usados para Análise de dados
+
+A seguir segue uma lista com os principais pacotes usados na disciplina **FIP 606** e como eles são aplicados para a análise de dados em **Fitopatologia**.
+
+-   **`tidyverse`**\
+    Conjunto *master* de pacotes para manipulação, visualização e análise de dados. Inclui `dplyr`, `ggplot2`, `tidyr` e outros. É tipo o canivete suíço do R moderno.
+
+-   **`readxl`**\
+    Importa planilhas Excel direto pro R, sem frescura. Leitura simples e rápida.
+
+-   **`gsheet`**\
+    Puxa dados direto do Google Sheets, aquela planilha que todo mundo compartilha e esquece de atualizar.
+
+-   **`dplyr`**\
+    Pacote do tidyverse focado em manipulação de dados: filtrar, agrupar, resumir, juntar tabelas... um verdadeiro ninja da limpeza.
+
+-   **`janitor`**\
+    Facilita limpar dados sujos, nome de colunas bagunçadas, formatos estranhos... o faxineiro do R.
+
+-   **`agricolae`**\
+    Ferramentas específicas para análise estatística em agricultura e experimentos, tipo blocos casualizados, testes de médias, design experimental.
+
+-   **`patchwork`**\
+    Para juntar múltiplos gráficos `ggplot2` numa só tela, de forma simples, sem precisar virar contorcionista de layout.
+
+-   **`performance`**\
+    Checa a qualidade do seu modelo estatístico, diagnosticando suposições como normalidade, homocedasticidade e colinearidade. O médico dos seus modelos.
+
+-   **`car`**\
+    Oferece funções avançadas para análise de regressão, diagnóstico e testes estatísticos, tipo Anova e VIF, além de gráficos.
+
+-   **`multcomp`**\
+    Ferramenta para testes múltiplos de comparações (Tukey, Dunnett, etc), com controle rigoroso do erro tipo I.
+
+-   **`emmeans`**\
+    Calcula médias ajustadas e faz comparações post hoc, muito útil para interpretar modelos complexos, tipo GLM e mistos.
+
+-   **`DHARMa`**\
+    Diagnóstico de resíduos para modelos mistos e GLM usando simulações, muito mais confiável do que só olhar gráfico.
+
+-   **`multcompView`**\
+    Gera letras compactas para representar diferenças significativas nas comparações múltiplas, deixando seus gráficos mais legíveis.
+
+-   **`ggpubr`**\
+    Extensão do ggplot2 que facilita fazer gráficos “bonitinhos” com funções rápidas para estatística e layout.
+
+-   **`rstatix`**\
+    Pacote para testes estatísticos simples e intuitivos, focado em facilitar a vida no R.
+
+-   **`report`**\
+    Gera relatórios automáticos interpretando seus testes e modelos estatísticos, tipo um assistente que escreve por você.
+
+-   **`ggplot2`**\
+    A rainha da visualização gráfica no R. Cria gráficos sofisticados e customizáveis usando gramática dos gráficos.
+
+-   **`ggthemes`**\
+    Coleção de temas prontos e estilos para o ggplot2, deixando seus gráficos mais elegantes e profissionais.
+
+-   **`epifitter`**\
+    Pacote especializado em análise de dados epidemiológicos, cálculo de índices e ajuste de curvas.
+
+-   **`lme4`**\
+    Pacote clássico para ajustar modelos lineares e generalizados mistos — ou seja, com efeitos fixos e aleatórios.
+
+-   **`MASS`**\
+    Pacote base que traz funções estatísticas clássicas, como modelos de regressão robustos, análise discriminante e mais.
+
+-   **`drc`**\
+    Dose-response curve fitting — ajusta curvas de resposta a doses, muito usado em toxicologia, farmacologia, controle de pragas.
+
+-   **`ec50estimator`**\
+    Especializado em estimar a concentração efetiva 50% (EC50) a partir de dados experimentais, parceiro do drc para toxicidade.
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(gsheet)
+library(dplyr)
+library(janitor)
+library(agricolae)
+library(patchwork)
+library(performance)
+library(car)
+library(multcomp)
+library(emmeans)
+library(DHARMa)
+library(multcomp)
+library(multcompView)
+library(ggpubr)
+library(rstatix)
+library(report)
+library(ggplot2)
+library(ggthemes)
+library(epifitter)
+library(lme4)
+library(MASS)
+library(drc)
+library(ec50estimator)
+```

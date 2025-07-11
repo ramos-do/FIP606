@@ -1,0 +1,87 @@
+---
+title: "Aula 1 - Introdução ao R"
+author: Danilo Oliveira Ramos
+format: html
+---
+
+# Introdução ao R
+
+Para darmos início ao uso do software R, primeiro temos que conhecer como ele funciona. Abaixo segue algumas explicações básicas a respeito de como ele funciona.
+
+![](images/data_r.png)
+
+## **R Markdown**
+
+O **R Markdown** é uma ferramenta do R que permite combinar **texto formatado** (como em Word), **código em R** e seus **resultados (gráficos, tabelas, etc.)** em um único documento. Ele é muito útil para criar relatórios dinâmicos, trabalhos acadêmicos, análises reprodutíveis e apresentações. Usa uma sintaxe simples de formatação (como `#` para títulos e `**texto**` para negrito), e os trechos de código são colocados em blocos chamados de *chunks*. Ao "tecer" o documento (knit), o R executa o código e gera um arquivo final (HTML, PDF ou Word) com texto e resultados integrados.
+
+## Como inserir textos ou códigos no R
+
+No **R Markdown**, inserir texto é simples: você digita normalmente como em um editor de texto comum. Para formatar, usa-se uma sintaxe leve chamada **Markdown** — por exemplo, `# Título` cria um título, `**negrito**` deixa o texto em negrito, e `*itálico*` em itálico. Já os **códigos em R** são inseridos em blocos chamados **chunks**, que começam com três crases e `{r}` , por exemplo:
+
+```{r}
+summary(mtcars)
+```
+
+Dentro desses blocos, você escreve comandos em R como faria no console. Ao "tecer" (knit) o documento, o R executa esses códigos e mostra os resultados no relatório final, junto com o texto explicativo. Isso permite criar relatórios dinâmicos e reprodutíveis com código e interpretação no mesmo lugar.
+
+## Como Instalar e Carregar de Pacotes:
+
+-   O pacote **`agricolae`** contém funções úteis para experimentação agrícola;
+
+-   **`tidyverse`** é uma coleção de pacotes para manipulação e visualização de dados
+
+```{r}
+install.packages("tidyverse")
+install.packages("agricolae")
+library(tidyverse)
+library(agricolae)
+```
+
+## Data.frame
+
+A função `data.frame()` no R é usada para criar tabelas de dados com colunas de diferentes tipos (números, textos, lógicos etc.), onde cada linha representa uma observação. É uma das estruturas mais básicas e importantes do R, ideal para armazenar e manipular dados de forma organizada. As colunas podem ser acessadas facilmente por nome (com `$`) ou por índice, e a função permite criar conjuntos de dados personalizados.
+
+## **Análise de área abaixo da curva de progresso da doença - AUDPC**
+
+```{r}
+# Vetor com as datas das avaliações da doença (em dias após o plantio)
+dates <- c(14,21,28)
+dates
+
+# Severidade da doença em cada data correspondente
+severity <- c(40,80,90)
+severity
+
+# Cálculo da AUDPC com base nos valores de severidade e datas
+audpc(severity, dates, type = "absolute")
+# type = "absolute" calcula a área total sob a curva (sem normalizar)
+```
+
+```{r}
+# Explorando conjunto de dados de exemplo (incluso no pacote agricolae)
+data(corn)  # dataset com dados simulados de milho
+str(corn)   # estrutura do objeto 'corn'
+```
+
+## Criando um gráfico de progresso da doença
+
+```{r}
+# Definindo datas e severidade de uma curva simulada
+dates <- c(7, 14, 21, 28, 35, 42)
+severity <- c(0.1, 5, 10, 35, 50, 60)
+
+# Criando um data frame com as datas e severidade
+data_curva <- data.frame(dates, severity)
+
+# Usando o operador |> (pipe) para aplicar funções de forma sequencial
+# Criamos uma nova coluna chamada 'severity2' com dados ajustados para visualização
+
+data_curva |>  
+  mutate(severity2 = c(1, 10, 35, 58, 70, 79)) |> 
+  ggplot(aes(dates, severity2)) +  # Mapeamento estético: eixo x = datas, eixo y = severidade2
+  geom_area(fill = "blue") +       # Área sob a curva (cor azul)
+  geom_line(linewidth = 2, color = "red") +  # Linha vermelha grossa
+  geom_point(size = 4, color = "yellow") +   # Pontos de avaliação (amarelos)
+  labs(x = "Dias após o plantio", y = "Severidade") +  # Rótulos dos eixos
+  scale_y_continuous(limits = c(0, 100))     # Limite do eixo y de 0 a 100
+```
